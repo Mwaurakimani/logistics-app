@@ -22,18 +22,9 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name ('home_page');
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
-});
 
-Route::get('home',function (){
-    return "n";
-})->name ('home');
+
+require 'main/index.php';
+require 'Dashboard/dashboard.php';

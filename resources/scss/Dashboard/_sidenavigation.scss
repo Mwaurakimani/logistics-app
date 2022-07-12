@@ -1,0 +1,36 @@
+#dashboard-sidebar{
+  background-color: #1F1F1F;
+
+  .logo-section{
+    width: 100%;
+    height: 70px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    p{
+      text-align: center;
+      color: red;
+      font-size: 1.5em;
+      font-weight: 500;
+    }
+  }
+
+  .buttons-section{
+    ul{
+      li{
+        width: 100%;
+        padding:12px;
+        color: white;
+        cursor: pointer;
+        &:hover{
+          background-color: black;
+        }
+      }
+
+      .active{
+        background-color: red;
+      }
+    }
+  }
+}

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -24,9 +26,10 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
+        'phone',
     ];
 
     /**
@@ -48,14 +51,22 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'created_at' =>'datetime:d/m/Y',
+        'updated_at' =>'datetime:d/m/Y'
     ];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'profile_photo_url',
-    ];
+    
+    
+    
+    
+//    protected function createdAt(): Attribute
+//    {
+//        return Attribute::make(
+//          get: function ($value){
+//
+//              dd (Carbon::parse($value));
+//
+//              return ;
+//            }
+//        );
+//    }
 }

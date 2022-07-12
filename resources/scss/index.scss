@@ -1,3 +1,8 @@
-.hello{
-  background-color: green;
+@import "./Dashboard/sidenavigation";
+@import "./Dashboard/topNavigation";
+@import "./Dashboard/dashboard";
+
+input{
+  color: black;
+  background-color: white;
 }
