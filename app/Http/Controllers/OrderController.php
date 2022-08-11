@@ -82,7 +82,6 @@ class OrderController extends Controller
     public function post_order(StoreOrder $request)
     {
 
-        dd("here");
         $order = new Order();
 
         $order->customer_name = $request['customer_name'];
