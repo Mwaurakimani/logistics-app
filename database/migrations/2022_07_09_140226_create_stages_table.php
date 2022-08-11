@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('items');
             $table->string('time');
             $table->string('date');
-            $table->text('full_details');
+            $table->text('full_details')->nullable ();
             $table->unsignedBigInteger ('delivery_id');
             $table->timestamps();
         });

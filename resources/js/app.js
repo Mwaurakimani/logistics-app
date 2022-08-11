@@ -6,13 +6,19 @@ import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import {createStore} from "vuex";
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import { Link } from "@inertiajs/inertia-vue3";
 import layout from "./components/layout.vue";
 import defaultLayout from "./components/defaultLayout.vue";
+import store from "./Store/store";
 
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
+
+
+const STORE = createStore(store)
+
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -39,6 +45,7 @@ createInertiaApp({
         return createApp({render: () => h(app, props)})
             .use(plugin)
             .use(ZiggyVue, Ziggy)
+            .use(STORE)
             .mixin({
                 components: {
                     Link

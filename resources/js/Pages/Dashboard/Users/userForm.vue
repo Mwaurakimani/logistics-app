@@ -25,23 +25,26 @@
                     <div class="input-group">
                         <label for="">Username</label>
                         <input type="text" v-model="user_from.username">
+                        <span v-if="this.$attrs.errors.username"  class="form_error">{{this.$attrs.errors.username}} </span>
                     </div>
                     <div class="input-group">
                         <label for="">Email</label>
                         <input type="email" v-model="user_from.email">
+                        <span v-if="this.$attrs.errors.email"  class="form_error">{{this.$attrs.errors.email}} </span>
                     </div>
                     <div class="input-group">
                         <label for="">Phone</label>
                         <input type="text" v-model="user_from.phone">
+                        <span v-if="this.$attrs.errors.phone"  class="form_error">{{this.$attrs.errors.phone}} </span>
                     </div>
                     <div class="input-group">
                         <label for="">Account Type</label>
                         <select name="" id="" v-model="user_from.account_type">
                             <option value="none">none</option>
-                            <option value="admin">Admin</option>
-                            <option value="sales">Sales</option>
-                            <option value="finance">Finance</option>
-                            <option value="logistics">Logistics</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Logistics">Logistics</option>
                         </select>
                     </div>
                     <div class="input-group">
@@ -59,14 +62,17 @@
                     <div class="input-group">
                         <label for="">Current password</label>
                         <input type="password" v-model="security_form.current_password">
+                        <p class="error_text" >{{ $attrs.errors.current_password }}</p>
                     </div>
                     <div class="input-group">
                         <label for="">New Password</label>
                         <input type="password" v-model="security_form.new_password">
+                        <p class="error_text" >{{ $attrs.errors.new_password }}</p>
                     </div>
                     <div class="input-group">
                         <label for="">Confirm Password</label>
-                        <input type="password" v-model="security_form.confirm_password">
+                        <input type="password" v-model="security_form.confirm_new_password">
+                        <p class="error_text" >{{ $attrs.errors.confirm_new_password }}</p>
                     </div>
 
                     <button @click="update_password">Update Password</button>
@@ -111,7 +117,7 @@ export default {
             security_form: this.$inertia.form({
                 current_password:null,
                 new_password:null,
-                confirm_password:null,
+                confirm_new_password:null,
             })
         }
     },
@@ -135,6 +141,11 @@ export default {
 
 body{
   overflow: hidden;
+}
+
+.error_text{
+  width: 100%;
+  color: red;
 }
 
 .action-bar{

@@ -16,17 +16,17 @@ export default defineConfig({
                 },
             },
         }),
-        {
-            name: 'backend',
-            handleHotUpdate({file,server}) {
-                if ( file.endsWith('.php') ){
-                    server.ws.send({
-                        type: 'full-reload',
-                        path: '*'
-                    })
-                }
-            }
-        },
+        // {
+        //     name: 'backend',
+        //     handleHotUpdate({file,server}) {
+        //         if ( file.endsWith('.php') ){
+        //             server.ws.send({
+        //                 type: 'full-reload',
+        //                 path: '*'
+        //             })
+        //         }
+        //     }
+        // },
         inject({
             $: 'jquery',
         }),

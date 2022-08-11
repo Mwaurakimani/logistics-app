@@ -12,20 +12,24 @@
                         <div class="input-group">
                             <label for="">Shipping is handled by</label>
                             <input type="text" v-model="delivery.handled_by">
+                            <span v-if="errors.handled_by" class="form_error">{{ errors.handled_by }}</span>
                         </div>
                     </section>
                     <section>
                         <div class="input-group">
                             <label for="">Dispatched from</label>
                             <input type="text" v-model="delivery.dispatched_from">
+                            <span v-if="errors.dispatched_from" class="form_error text-center">{{ errors.dispatched_from }}</span>
                         </div>
                         <div class="input-group">
                             <label for="">Date Dispatched</label>
                             <input type="datetime-local" v-model="delivery.dispatch_date">
+                            <span v-if="errors.dispatch_date" class="form_error text-center">{{ errors.dispatch_date }}</span>
                         </div>
                         <div class="input-group">
                             <label for="">Region</label>
                             <input type="text" v-model="delivery.region">
+                            <span v-if="errors.region" class="form_error text-center">{{ errors.region }}</span>
                         </div>
                         <div class="input-group">
                             <label for="">Transit position</label>
@@ -36,21 +40,27 @@
                                 <option value="Order Delivered">Order Delivered</option>
                                 <option value="Order Fulfilled">Order Fulfilled</option>
                             </select>
-
+                            <span v-if="errors.transit_position" class="form_error text-center">{{ errors.transit_position }}</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="">Vehicle Assigned</label>
+                            <select  v-model="delivery.vehicle">
+                                <option value="None">None</option>
+                                <option v-for="vehicle in Vehicles" :value="vehicle.id" >{{ vehicle.registration_number }}</option>
+                            </select>
+                            <span v-if="errors.vehicle" class="form_error text-center">{{ errors.vehicle }}</span>
                         </div>
                     </section>
                     <section>
                         <div class="input-group">
                             <label for="">Estimated Delivery Date</label>
                             <input type="date" v-model="delivery.estimated_time_of_arrival">
+                            <span v-if="errors.estimated_time_of_arrival" class="form_error text-center">{{ errors.estimated_time_of_arrival }}</span>
                         </div>
                     </section>
                     <section>
-                        <h6>More Shipping details</h6>
-                        <div class="input-group">
-                            <label for="">Package ID</label>
-                            <input type="text" v-model="delivery.handled_by">
-                        </div>
+                        <h6>Customer Feed back</h6>
+                        <p class="customer_feedback" >{{ delivery.comment ?? "No comment"  }}</p>
                     </section>
                 </form>
             </section>
@@ -71,7 +81,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="(item,index) in stages">
-                                <th scope="row">{{index}}</th>
+                                <th scope="row">{{ (index + 1)}}</th>
                                 <td>{{ item.id }}</td>
                                 <td>{{ item.location }}</td>
                                 <td>description</td>
@@ -79,10 +89,10 @@
                                 <td>{{ item.time+" "+item.date }}</td>
                                 <td>
                                     <div>
-                                        <div class="icon-holder">
-                                            <img src="/storage/icons/edit.png" alt="">
-                                        </div>
-                                        <div class="icon-holder">
+<!--                                        <div @click="" class="icon-holder">-->
+<!--                                            <img src="/storage/icons/edit.png" alt="">-->
+<!--                                        </div>-->
+                                        <div @click="delete_stage(item.id)" class="icon-holder">
                                             <img src="/storage/icons/delete.png" alt="">
                                         </div>
                                     </div>
@@ -101,23 +111,28 @@
                     <textarea v-model="stage_form.description">
 
                     </textarea>
+                    <span v-if="errors.description" class="form_error text-center">{{ errors.description }}</span>
                 </div>
                 <div class="input-group">
                     <label>Location</label>
                     <input type="text" v-model="stage_form.location">
+                    <span v-if="errors.location" class="form_error text-center">{{ errors.location }}</span>
                 </div>
                 <div class="input-group">
                     <label>Items</label>
                     <input type="text" v-model="stage_form.items">
+                    <span v-if="errors.items" class="form_error text-center">{{ errors.items }}</span>
                 </div>
                 <div class="grouper">
                     <div class="input-group">
                         <label>Time</label>
                         <input style="font-size: 0.85em" type="time" v-model="stage_form.time">
+                        <span v-if="errors.time" class="form_error text-center">{{ errors.time }}</span>
                     </div>
                     <div class="input-group">
                         <label>Date</label>
                         <input style="font-size: 0.85em" type="date" v-model="stage_form.date">
+                        <span v-if="errors.date" class="form_error text-center">{{ errors.date }}</span>
                     </div>
                 </div>
                 <div class="input-group">
@@ -135,7 +150,7 @@
 <script>
 export default {
     name: 'delivery-form',
-    props: ['delivery','tracking_code','stages'],
+    props: ['delivery','tracking_code','stages','Vehicles','errors'],
     data(){
         return {
             stage_form: this.$inertia.form({
@@ -150,7 +165,20 @@ export default {
     },
     methods:{
         create_stage(){
-            this.stage_form.post(route('create_stage',[this.tracking_code]))
+            this.stage_form.post(route('create_stage',[this.tracking_code]),{
+                preserveScroll: true,
+                onSuccess: () => this.stage_form.reset(),
+            })
+        },
+        delete_stage(id){
+
+            axios.delete(route('delete_stage',[id]))
+                .then(function (response) {
+                    window.location.reload();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
     },
     mounted() {
@@ -159,6 +187,7 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+
 body {
   overflow: hidden;
 }
@@ -356,5 +385,14 @@ body {
       border-radius: 5px;
     }
   }
+}
+
+.customer_feedback{
+    width: 96%;
+    margin: auto;
+    height: 300px;
+    background-color: #f3f3f3;
+    border-radius: 8px;
+    padding: 10px;
 }
 </style>

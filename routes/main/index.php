@@ -2,6 +2,7 @@
 
 use App\Models\Deliver;
 use App\Models\Stage;
+use Doctrine\Inflector\Rules\Turkish\Rules;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,65 +19,62 @@ use Inertia\Inertia;
 |
 */
 
+Route::post ('/trackbyid', function (Request $request) {
+    $id = $request['id'];
 
-Route::get('/trackbyid/{id}',function ($id,Request $request){
     $stages = null;
+    $dates = null;
     $deliveries = null;
-    
-    $delivery = Deliver::where('id',$id)->get();
-    
-    if(count($delivery) > 0){
+
+    $delivery = Deliver::where ('id', $id)
+                       ->get ();
+
+    if (count ($delivery) > 0) {
         $deliveries = $delivery;
-        $stages = Stage::where('delivery_id',$delivery[0]->id)->get();
-        
-        if(count($stages)){
+        $stages = Stage::where ('delivery_id', $delivery[0]->id)
+                       ->get ();
+
+        if (count ($stages)) {
             $dates = [];
-            
+
             //get used dates
-            $stages->each(function ($item,$key) use (&$dates) {
+            $stages->each (function ($item, $key) use (&$dates) {
                 array_push ($dates, $item->date);
             });
-            
+
             //remove all duplicates
             $dates = array_unique ($dates);
-            
-            foreach ($dates as $key1 => $date){
+
+            foreach ($dates as $key1 => $date) {
                 $dates[$key1] = array(
-                    'date'.$key1 => $date,
-                    'date_items' => array()
+                    'date' => $date,
+                    'date_items' => array(),
                 );
-                $stages->each(function ($item1,$key2) use (&$dates,$key1,$date) {
-                    if($item1->date == $date){
+                $stages->each (function ($item1, $key2) use (&$dates, $key1, $date) {
+                    if ($item1->date == $date) {
                         array_push ($dates[$key1]['date_items'], $item1);
                     }
                 });
             }
-            
-            //pass respective dates to array value
+
         }
     }
-    
-    return Inertia::render ('main/OrderDetails',[
+
+
+    return Inertia::render ('main/OrderDetails', [
         'delivery' => $deliveries,
-        'stages' => $dates
+        'stages' => $dates,
+        'delivery_id' => $id,
     ]);
-})->name ('track_delivery_by_id');
+})
+     ->name ('track_delivery_by_id');
 
+Route::post('/postComment/{Delivery}',function (Request $request,Deliver $Delivery){
+    if($request['comment'] != null && $request['comment'] != ''){
+        $Delivery->comment = $request['comment'];
 
-//Route::post('/trackbyid',function (Request $request){
-//
-//    $delivery = Deliver::where('id',$request['id'])->get();
-//
-//    $stages = null;
-//
-//    if(count($delivery) > 0){
-//        $stages = Stage::where('delivery_id',$delivery[0]->id)->get();
-//    }
-//
-//    dd ($stages);
-//
-//    return Inertia::render ('main/OrderDetails',[
-//        'deliver' => $delivery,
-//        'stages' => $stages
-//    ]);
-//})->name ('track_delivery_by_id');
+        $Delivery->save();
+    };
+
+    return redirect('/');
+})->name('post_comment');

@@ -46,8 +46,45 @@
     </div>
 </template>
 <script>
+import deliveryDetails from "../Dashboard/Orders/deliveryDetails.vue";
+
 export default {
-    name: 'tracker-element'
+    name: 'tracker-element',
+    props: ['deliveryData'],
+    computed: {
+        track() {
+            let percentage = 0;
+
+            switch ( this.position ) {
+                case 'Order Confirmed':
+                    percentage = 0;
+                    break;
+                case 'Order Dispatched':
+                    percentage = 33.3;
+                    break;
+                case 'Order Delivered':
+                    percentage = 66.6;
+                    break;
+                case 'Order Fulfilled':
+                    percentage = 100;
+                    break;
+                default:
+                    percentage = 0;
+                    console.log('position: ' + this.position)
+                    break
+            }
+
+            return percentage + '%';
+        }
+    },
+    data() {
+        return {
+            position: this.deliveryData[0].transit_position
+        }
+    },
+    mounted() {
+        console.log(this.deliveryData)
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -58,38 +95,40 @@ export default {
   width: 900px;
   margin: auto;
 
-  .elem-content-holder{
+  .elem-content-holder {
     width: 900px;
     height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    .track-stop{
+    .track-stop {
       width: 90px;
       height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
-      p{
+
+      p {
         text-align: center;
         font-weight: bolder;
       }
     }
   }
-  .track-runner{
+
+  .track-runner {
     position: relative;
     width: 830px;
     margin: auto;
 
-    .beacon-holder{
+    .beacon-holder {
       width: 100%;
       height: 30px;
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      .stop-beacon{
+      .stop-beacon {
         width: 20px;
         height: 20px;
         display: flex;
@@ -98,7 +137,8 @@ export default {
         background-color: red;
         border-radius: 50%;
         z-index: 100;
-        .inner{
+
+        .inner {
           border-radius: 50%;
           background-color: white;
           width: 50%;
@@ -107,15 +147,15 @@ export default {
       }
     }
 
-    .runner{
-      top:-18px;
+    .runner {
+      top: -18px;
       position: relative;
       width: 100%;
       height: 6px;
       background-color: #DCD3D4;
 
-      .inner-runner{
-        width: 66.6%;
+      .inner-runner {
+        width: v-bind(track);
         height: 100%;
         background-color: red;
       }

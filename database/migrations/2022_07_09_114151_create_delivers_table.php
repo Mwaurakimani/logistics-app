@@ -20,8 +20,9 @@ return new class extends Migration
             $table->dateTime ('dispatch_date')->nullable ();
             $table->string ('region')->nullable ();
             $table->string ('transit_position')->nullable ();
+            $table->string ('vehicle_id')->nullable ();
             $table->string ('estimated_time_of_arrival')->nullable ();
-            $table->string ('package_id')->nullable ();
+            $table->string ('comment')->nullable ();
             $table->string ('order_id')->nullable ();
             $table->timestamps();
         });

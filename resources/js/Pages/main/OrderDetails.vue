@@ -1,146 +1,67 @@
 <template>
     <main-navigation/>
 
-    <div v-if="order_available" class="found_order_details">
-        <section>
-            <p>Tracking Code: {{ delivery[0].id}}</p>
-            <p>Shipping is handled by: <b>{{ delivery[0].handled_by }}</b></p>
-        </section>
-        <section>
-            <h5>{{ delivery[0].dispatched_from }}</h5>
-            <p>{{ 	delivery[0].dispatch_date }}, {{ delivery[0].region }}</p>
-            <tracker-element/>
-        </section>
-        <section>
-            <p>Estimated Delivery Date</p>
-            <h5>{{ delivery[0].estimated_time_of_arrival }} - By End Day</h5>
-            <!--            <button>Shipping notifications</button>-->
-        </section>
-        <section>
-            <h5>More Shipment Details</h5>
-            <div class="more-details">
-                2 Pieces
+    <div v-if="order_available">
+        <div  class="found_order_details">
+            <section>
+                <p>Tracking Code: {{ delivery[0].id}}</p>
+                <p>Shipping is handled by: <b>{{ delivery[0].handled_by }}</b></p>
+            </section>
+            <section>
+                <h5>{{ delivery[0].dispatched_from }}</h5>
+                <p>{{ 	delivery[0].dispatch_date }}, {{ delivery[0].region }}</p>
+                <tracker-element :deliveryData="delivery" />
+            </section>
+            <section>
+                <p>Estimated Delivery Date</p>
+                <h5>{{ delivery[0].estimated_time_of_arrival }} - By End Day</h5>
+                <!--            <button>Shipping notifications</button>-->
+            </section>
+            <section>
+                <h5>More Shipment Details</h5>
+                <div class="more-details">
+                    2 Pieces
+                </div>
+            </section>
+            <section class="detailed_shipping_details" style="border:none">
+                <h5 class="" style="margin-bottom: 30px">All Shipment Details</h5>
+                <div class="splitter"></div>
+                <div v-for="stage in stages" class="day-details">
+                    <div class="date-section">
+                        <p>{{ get_day(stage.date) }}</p>
+                        <h5>{{ stage.date }}</h5>
+                    </div>
+                    <div v-for="entry in stage.date_items" class="entry-record">
+                        <div class="time-display">
+                            <p>{{ entry.time }} Localtime</p>
+                        </div>
+                        <div class="icon-display triangle">
+                            <img src="/storage/icons/triangle.png" alt="location">
+                        </div>
+                        <div class="full-details">
+                            <h6>{{ entry.description }}</h6>
+                            <p>{{ (entry.location).toUpperCase() }}</p>
+                            <p class="piece">{{ entry.items }} pieces</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="comment_section" >
+            <h5>Comment</h5>
+            <div class="form-input">
+                <textarea v-model="form.comment" >
+
+                </textarea>
+                <button @click="submit_comment" >Submit</button>
             </div>
-        </section>
-        <section class="detailed_shipping_details" style="border:none">
-            <h5 class="" style="margin-bottom: 30px">All Shipment Details</h5>
-            <div class="splitter"></div>
-            <div class="day-details">
-                <div class="date-section">
-                    <p>Sunday</p>
-                    <h5>July, 02 2022</h5>
-                </div>
-                <div class="entry-record">
-                    <div class="time-display">
-                        <p>06:20pm Localtime</p>
-                    </div>
-                    <div class="icon-display">
-                        <img src="/storage/icons/location.png" alt="location">
-                    </div>
-                    <div class="full-details">
-                        <h6>Dispatched from HQ</h6>
-                        <p>NAIROBI-CBD</p>
-                        <p class="piece">2 pieces</p>
-                    </div>
-                </div>
-            </div>
-            <div class="day-details">
-                <div class="date-section">
-                    <p>Sunday</p>
-                    <h5>July, 02 2022</h5>
-                </div>
-                <div class="entry-record">
-                    <div class="time-display">
-                        <p>06:20pm Localtime</p>
-                    </div>
-                    <div class="icon-display triangle">
-                        <img src="/storage/icons/triangle.png" alt="location">
-                    </div>
-                    <div class="full-details">
-                        <h6>Dispatched from HQ</h6>
-                        <p>NAIROBI-CBD</p>
-                        <p class="piece">2 pieces</p>
-                    </div>
-                </div>
-                <div class="entry-record">
-                    <div class="time-display ">
-                        <p>06:20pm Localtime</p>
-                    </div>
-                    <div class="icon-display triangle">
-                        <img src="/storage/icons/triangle.png" alt="location">
-                    </div>
-                    <div class="full-details">
-                        <h6>Dispatched from HQ</h6>
-                        <p>NAIROBI-CBD</p>
-                        <p class="piece">2 pieces</p>
-                    </div>
-                </div>
-                <div class="entry-record">
-                    <div class="time-display ">
-                        <p>06:20pm Localtime</p>
-                    </div>
-                    <div class="icon-display triangle">
-                        <img src="/storage/icons/triangle.png" alt="location">
-                    </div>
-                    <div class="full-details">
-                        <h6>Dispatched from HQ</h6>
-                        <p>NAIROBI-CBD</p>
-                        <p class="piece">2 pieces</p>
-                    </div>
-                </div>
-            </div>
-            <div class="day-details">
-                <div class="date-section">
-                    <p>Sunday</p>
-                    <h5>July, 02 2022</h5>
-                </div>
-                <div class="entry-record">
-                    <div class="time-display">
-                        <p>06:20pm Localtime</p>
-                    </div>
-                    <div class="icon-display triangle">
-                        <img src="/storage/icons/triangle.png" alt="location">
-                    </div>
-                    <div class="full-details">
-                        <h6>Dispatched from HQ</h6>
-                        <p>NAIROBI-CBD</p>
-                        <p class="piece">2 pieces</p>
-                    </div>
-                </div>
-                <div class="entry-record">
-                    <div class="time-display ">
-                        <p>06:20pm Localtime</p>
-                    </div>
-                    <div class="icon-display triangle">
-                        <img src="/storage/icons/triangle.png" alt="location">
-                    </div>
-                    <div class="full-details">
-                        <h6>Dispatched from HQ</h6>
-                        <p>NAIROBI-CBD</p>
-                        <p class="piece">2 pieces</p>
-                    </div>
-                </div>
-                <div class="entry-record">
-                    <div class="time-display ">
-                        <p>06:20pm Localtime</p>
-                    </div>
-                    <div class="icon-display">
-                        <img src="/storage/icons/location.png" alt="location">
-                    </div>
-                    <div class="full-details">
-                        <h6>Dispatched from HQ</h6>
-                        <p>NAIROBI-CBD</p>
-                        <p class="piece">2 pieces</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
     </div>
 
     <div v-else class="no_order_details">
         <div class="no_order_notice">
-            <p>No order with id 0000000000 found</p>
-            <a href="">Go to home</a>
+            <p>No order with id <b style="color: red">{{ delivery_id }}</b> found</p>
+            <Link :href="'/'" as="a"  > Go to Home</Link>
         </div>
     </div>
 
@@ -160,15 +81,51 @@ export default {
         Footer,
         layout
     },
-    props:['delivery','stages'],
+    props:['delivery','stages','delivery_id'],
     data() {
         return {
-            order_available: true
+            order_available: this.delivery ? true : false,
+            form: this.$inertia.form({
+                comment: this.delivery? this.delivery[0].comment ?? '' : ''
+            })
         }
     },
-    mounted() {
-        console.log(this.delivery)
-    }
+    methods:{
+        get_day(date){
+            let date_rendered = new Date(date)
+            let day = null;
+
+            switch (date_rendered.getDay()) {
+                case 0:
+                    day = "Sunday";
+                    break;
+                case 1:
+                    day = "Monday";
+                    break;
+                case 2:
+                    day = "Tuesday";
+                    break;
+                case 3:
+                    day = "Wednesday";
+                    break;
+                case 4:
+                    day = "Thursday";
+                    break;
+                case 5:
+                    day = "Friday";
+                    break;
+                case 6:
+                    day = "Saturday";
+            }
+
+            return day;
+        },
+
+        submit_comment(event){
+            console.log(this.delivery_id);
+            this.form.post(route('post_comment',[this.delivery_id]));
+        }
+    },
 }
 </script>
 
@@ -245,7 +202,38 @@ export default {
   }
 }
 
+.comment_section{
+    width: 1000px;
+    margin: auto;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
 
+    h5{
+        padding: 10px;
+        font-weight: bolder;
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+
+    .form-input{
+        width: 90%;
+        margin: auto;
+        border: none;
+
+        textarea{
+            width: 100%;
+            border-radius: 8px;
+            height: 200px;
+            padding: 10px;
+        }
+        button{
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border-radius: 8px;
+        }
+    }
+}
 
 .detailed_shipping_details {
   .day-details {

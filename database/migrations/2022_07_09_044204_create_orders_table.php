@@ -16,13 +16,12 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('customer_name');
-            $table->string('contact_name');
-            $table->string('contact_phone');
+            $table->string('contact_name')->nullable ();
+            $table->string('contact_phone')->nullable ();
             $table->string('contact_address');
             $table->string('user_id');
-            $table->date('date_received');
-            $table->date('proposed_delivery_date');
-            $table->string('comments');
+            $table->date('proposed_delivery_date')->nullable ();
+            $table->string('comments')->nullable ();
             $table->string('lpo_number');
             $table->decimal('lpo_value',15,2);
             $table->string ('payment_status');

@@ -3,13 +3,13 @@
     <div class="action-bar">
         <div class="button-section">
             <ul>
-                <Link :href="route('dashboard_add_users')" as="li" >
+                <Link :href="route('dashboard_add_users')" as="li" class="rep-btn">
                     <p>Add User</p>
                 </Link>
             </ul>
         </div>
         <div class="search-section">
-            <input type="text">
+            <input type="text" placeholder="Search by username" @keyup="search_users()">
         </div>
     </div>
     <div class="table-section">
@@ -40,10 +40,27 @@
 </template>
 
 <script>
+import {isStringNullOrWhiteSpace} from '/resources/js/functions';
+import axios from "axios";
+
 export default {
     name: "index.vue",
     props: ['users'],
+    methods:{
+        search_users(){
+            let text = $(event.currentTarget).val();
 
+            if(!isStringNullOrWhiteSpace(text)){
+                this.$inertia.post(route('dashboard_search_user'),{
+                    data: text
+                })
+            }else {
+                this.$inertia.post(route('dashboard_search_user'),{
+                    data: ''
+                })
+            }
+        }
+    },
     mounted() {
         console.log(this.users)
     }

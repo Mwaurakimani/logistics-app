@@ -3,22 +3,27 @@
     <div class="action-bar">
         <div class="button-section">
             <ul>
-                <Link :href="route('dashboard_orders')" as="li" >
+                <Link :href="route('dashboard_orders')" as="li" class="rep-btn">
                     <p>Order List</p>
                 </Link>
-                <Link :href="route('dashboard_select_order',[order])" as="li" >
+                <Link :href="route('dashboard_select_order',[order])" as="li" class="rep-btn">
                     <p>Order</p>
                 </Link>
-                <li v-if="delivery.length > 0" @click="update_delivery">
+                <li v-if="delivery.length > 0" @click="update_delivery" class="rep-btn">
                     <p>Update Delivery</p>
                 </li>
             </ul>
         </div>
-        <div class="search-section">
-            <input type="text" placeholder="Search by ID...">
-        </div>
     </div>
-    <delivery-form v-if="delivery.length > 0" :tracking_code="delivery[0].id"  :delivery="this.delivery_form" :stages="stages" />
+    <delivery-form
+            v-if="delivery.length > 0"
+            :tracking_code="delivery[0].id"
+            :delivery="this.delivery_form"
+            :stages="stages"
+            :Vehicles="Vehicles"
+            :comment="comment"
+            :errors="errors.errors"
+    />
     <div v-else class="no_delivery">
         <p>No delivery available</p>
         <button @click="create_delivery">Create Delivery</button>
@@ -30,40 +35,43 @@ import DeliveryForm from "./Form/DeliveryForm.vue";
 
 export default {
     name: "deliveryDetails",
-    props:['delivery','order','stages'],
+    props: ['delivery', 'order', 'stages', 'Vehicles'],
     components: {DeliveryForm},
-    data(){
+    data() {
         return {
             delivery_form: this.$inertia.form({
-                handled_by : this.delivery.length > 0 ? this.delivery[0].handled_by : null,
-                dispatched_from : this.delivery.length > 0 ? this.delivery[0].dispatched_from : null,
-                dispatch_date : this.delivery.length > 0 ? this.delivery[0].dispatch_date : null,
-                region : this.delivery.length > 0 ? this.delivery[0].region : null,
-                transit_position : this.delivery.length > 0 ? this.delivery[0].transit_position : 'None',
-                estimated_time_of_arrival : this.delivery.length > 0 ? this.delivery[0].estimated_time_of_arrival : null,
-            })
+                handled_by: this.delivery.length > 0 ? this.delivery[0].handled_by : null,
+                dispatched_from: this.delivery.length > 0 ? this.delivery[0].dispatched_from : null,
+                dispatch_date: this.delivery.length > 0 ? this.delivery[0].dispatch_date : null,
+                region: this.delivery.length > 0 ? this.delivery[0].region : null,
+                transit_position: this.delivery.length > 0 ? this.delivery[0].transit_position : 'None',
+                comment: this.delivery.length > 0 ? this.delivery[0].comment : 'No Comment',
+                vehicle: this.delivery.length > 0 ? this.delivery[0].vehicle_id : 'None',
+                estimated_time_of_arrival: this.delivery.length > 0 ? this.delivery[0].estimated_time_of_arrival : null,
+            }),
+            errors:this.$attrs
         }
     },
-    methods:{
-        create_delivery(){
-            this.$inertia.post(route('generate_order',[this.order]))
+    methods: {
+        create_delivery() {
+            this.$inertia.post(route('generate_order', [this.order]))
         },
-        update_delivery(){
-            console.log(this.delivery)
-
-            this.delivery_form.put(route('update_delivery',{
-                Order:this.order,
-                Delivery:this.delivery[0].id}));
+        update_delivery() {
+            this.delivery_form.put(route('update_delivery', {
+                Order: this.order,
+                Delivery: this.delivery[0].id
+            }));
         }
     },
 }
 </script>
 
 <style lang='scss' scoped>
-body{
+body {
   overflow: hidden;
 }
-.action-bar{
+
+.action-bar {
   width: 100%;
   height: 45px;
   background-color: white;
@@ -73,15 +81,16 @@ body{
   justify-content: space-between;
   padding: 0px 10px;
 
-  .button-section{
+  .button-section {
     width: 300px;
     height: 100%;
 
-    ul{
+    ul {
       display: flex;
       align-items: center;
       height: 100%;
-      li{
+
+      li {
         background-color: red;
         width: auto;
         display: flex;
@@ -90,7 +99,7 @@ body{
         margin-left: 10px;
         border-radius: 5px;
 
-        p{
+        p {
           width: auto;
           height: auto;
           color: white;
@@ -101,21 +110,21 @@ body{
     }
   }
 
-  .search-section{
+  .search-section {
     width: 300px;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    input{
+    input {
       height: 32px;
       border-radius: 8px;
     }
   }
 }
 
-.no_delivery{
+.no_delivery {
   width: 98%;
   margin: auto;
   height: 200px;
@@ -125,7 +134,7 @@ body{
   justify-content: space-around;
   flex-direction: column;
 
-  button{
+  button {
     background-color: red;
     padding: 5px 10px;
     color: white;

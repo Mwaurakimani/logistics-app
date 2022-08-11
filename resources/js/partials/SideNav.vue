@@ -14,6 +14,9 @@
                 <Link :href="route('dashboard_users')" as="li" >
                     <p>User</p>
                 </Link>
+                <Link :href="route('dashboard_vehicles')" as="li" >
+                    <p>Vehicles</p>
+                </Link>
                 <Link :href="route('dashboard_settings')" as="li" >
                     <p>Settings</p>
                 </Link>

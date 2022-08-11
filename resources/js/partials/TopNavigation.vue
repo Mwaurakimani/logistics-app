@@ -12,10 +12,13 @@
 <!--            <div class="icon-section">-->
 <!--                <img src="/storage/icons/user.png" alt="">-->
 <!--            </div>-->
-            <div class="icon-section">
+            <div class="icon-section rep-btn">
                 <img title="account" src="/storage/icons/user.png" alt="">
             </div>
-            <div class="icon-section" @click="logout">
+            <Link as="div" class="icon-section rep-btn" :href="'/'">
+                <img title="account" src="/storage/icons/home.png" alt="">
+            </Link>
+            <div class="icon-section rep-btn" @click="logout">
                 <img title="log out" src="/storage/icons/logout.png" alt="">
             </div>
         </div>
