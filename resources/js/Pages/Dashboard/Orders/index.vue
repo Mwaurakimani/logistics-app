@@ -78,6 +78,7 @@
 <script>
 import LaravelVuePagination from 'laravel-vue-pagination';
 import {mapMutations, mapState} from "vuex";
+import {isStringNullOrWhiteSpace} from "../../../functions";
 
 
 export default {
@@ -136,8 +137,9 @@ export default {
             let el = document.createElement("a");
             el.href = text;
             return el.pathname;
-        }
-    }
+        },
+    },
+
 }
 </script>
 

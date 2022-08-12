@@ -7,6 +7,7 @@ use App\Models\Deliver;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class DeliverController extends Controller
 {
@@ -37,6 +38,8 @@ class DeliverController extends Controller
         $Delivery->estimated_time_of_arrival = $request['estimated_time_of_arrival'];
 
         $Delivery->save();
+
+        Session::flash('sess_message',"Delivery was updated Successfully");
 
         return Redirect::back ();
     }

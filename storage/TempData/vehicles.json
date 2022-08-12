@@ -1,0 +1,28 @@
+[
+    {
+        "registration_number": "KAS 225Q",
+        "model": "Toyota Hilux",
+        "class": "Pick Up"
+    },
+    {
+        "registration_number": "KMCA 001A",
+        "model": "Honda 2018",
+        "class": "Motorcycle"
+    },
+    {
+        "registration_number": "KHMA 001A",
+        "model": "Skygo 2020",
+        "class": "Motorcycle"
+    },
+    {
+        "registration_number": "KBD 205A",
+        "model": "Isuzu NPR",
+        "class": "Lorry"
+    },
+    {
+        "registration_number": "KAZ 111T",
+        "model": "Hino 300 WC",
+        "class": "Lorry"
+    }
+]
+

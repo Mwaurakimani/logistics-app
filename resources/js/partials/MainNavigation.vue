@@ -12,7 +12,7 @@
                 </div>
                 <div class="action_buttons">
                     <div>
-                        <img src="/storage/icons/add-to-cart.png" alt="">
+                        <img src="/storage/icons/homehome.png" alt="">
                     </div>
                     <Link :href="'/dashboard'" as="div">
                         <img src="/storage/icons/user.png" alt="">
@@ -23,7 +23,7 @@
         <div class="bottom_nav">
             <ul>
                 <li><a href="#">Offer</a></li>
-                <li><a href="/trackOrder">Track Your Order</a></li>
+                <li><a href="/">Track Your Order</a></li>
                 <li><a href="#">IT solutions</a></li>
                 <li><a href="#">Career</a></li>
                 <li><a href="#">Contact Us</a></li>

@@ -56,6 +56,12 @@
                 <h3>last update :</h3>
                 <p>{{ Vehicle ?Vehicle.created_at : 'N/A' }}</p>
             </div>
+            <div v-if="Vehicle" class="details_sect">
+                <h3>Driver :</h3>
+                <select name="" id="" v-model="vehicle.driver">
+                    <option v-for="driver in Drivers" :value="driver.id">{{ driver.username }}</option>
+                </select>
+            </div>
         </div>
     </div>
 </template>
@@ -63,7 +69,7 @@
 <script>
 export default {
     name: "addVehicles",
-    props:['Vehicle'],
+    props:['Vehicle','Drivers','driver_set'],
     data(){
         return{
             vehicle:this.$inertia.form({
@@ -71,7 +77,8 @@ export default {
                 reg_number: this.Vehicle != 'undefined' && this.Vehicle != null ? this.Vehicle.registration_number : null,
                 model: this.Vehicle != 'undefined' && this.Vehicle != null ? this.Vehicle.model : null,
                 vehicle_class: this.Vehicle != 'undefined' && this.Vehicle != null ? this.Vehicle.class : null,
-                notes: this.Vehicle != 'undefined' && this.Vehicle != null ? this.Vehicle.notes : null
+                notes: this.Vehicle != 'undefined' && this.Vehicle != null ? this.Vehicle.notes : null,
+                driver: this.driver_set ? this.driver_set.id : null
             })
         }
     },
@@ -214,6 +221,11 @@ export default {
     width: calc(100% - 70%  - 10px);
     background-color: white;
     box-shadow: 0 0 6px darkgrey;
+      select{
+          width: 200px;
+          height: 32px;
+          padding: 5px;
+      }
   }
 
   div{

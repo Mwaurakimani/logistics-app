@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Order;
 use App\Models\User;
+use App\Models\Vehicle;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
@@ -20,6 +21,8 @@ class DatabaseSet extends Seeder
         $this->add_users();
 
         $this->add_orders();
+
+        $this->add_vehicles();
     }
 
     public function add_users(){
@@ -66,6 +69,19 @@ class DatabaseSet extends Seeder
                 $order->save();
             }
         }
+    }
+
+    public function add_vehicles()
+    {
+        $vehicle_data = json_decode(file_get_contents(storage_path('TempData/vehicles.json')));
+
+        $vehicles = collect($vehicle_data);
+        $vehicles->map(function ($vehicle){
+            $vh = new Vehicle((array) $vehicle);
+
+            $vh->save();
+
+        });
     }
 }
 

@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Stage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class StageController extends Controller
 {
@@ -23,14 +24,16 @@ class StageController extends Controller
         $stage->delivery_id = $Delivery->id;
         $stage->full_details = $request['full_details'];
 
+
+
         $stage->save();
 
+        Session::flash('sess_message',"Progress was updated Successfully");
         return Redirect::back ();
     }
 
     public function delete_stage (Stage $Stage)
     {
         $Stage->delete ();
-
     }
 }

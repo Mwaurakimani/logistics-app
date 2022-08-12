@@ -42,6 +42,8 @@
                         <select name="" id="" v-model="user_from.account_type">
                             <option value="none">none</option>
                             <option value="Admin">Admin</option>
+                            <option value="Management">Management</option>
+                            <option value="Procurement">Procurement</option>
                             <option value="Sales">Sales</option>
                             <option value="Finance">Finance</option>
                             <option value="Logistics">Logistics</option>

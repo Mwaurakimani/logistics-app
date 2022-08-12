@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -100,6 +101,8 @@ class OrderController extends Controller
 
         $order->save();
 
+        Session::flash('sess_message',"Order was created Successfully");
+
         return Redirect::to('/orders');
     }
 
@@ -131,6 +134,8 @@ class OrderController extends Controller
         $Order->delivery_status = $request['delivery_status'];
 
         $Order->save();
+
+        Session::flash('sess_message',"Order was Updated Successfully");
 
         ItemController::add_item($Order,$request['tb']);
 

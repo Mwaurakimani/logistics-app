@@ -19,7 +19,10 @@ return new class extends Migration
             $table->string ('model');
             $table->string ('class');
             $table->text ('notes')->nullable ();
+            $table->unsignedBigInteger('user_id')->nullable ();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

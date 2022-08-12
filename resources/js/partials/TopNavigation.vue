@@ -16,7 +16,7 @@
                 <img title="account" src="/storage/icons/user.png" alt="">
             </div>
             <Link as="div" class="icon-section rep-btn" :href="'/'">
-                <img title="account" src="/storage/icons/home.png" alt="">
+                <img title="Home page" src="/storage/icons/home.png" alt="">
             </Link>
             <div class="icon-section rep-btn" @click="logout">
                 <img title="log out" src="/storage/icons/logout.png" alt="">

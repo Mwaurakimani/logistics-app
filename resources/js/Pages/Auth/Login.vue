@@ -32,54 +32,90 @@ const submit = () => {
 <template>
     <Head title="Log in" />
 
-    <JetAuthenticationCard>
-        <JetValidationErrors class="mb-4" />
+    <div class="log-in-pannel">
+        <div class="holder">
+            <div class="bright-description">
+                <div class="icon-section">
+                    <img src="/storage/icons/lorry.png" alt="">
+                </div>
+            </div>
+            <JetAuthenticationCard style="width: 50%">
+                <h4 class="">Sign In</h4>
+                <JetValidationErrors class="mb-4" />
+                <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+                    {{ status }}
+                </div>
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
+                <form @submit.prevent="submit">
+                    <div>
+                        <JetLabel for="email" value="Email" />
+                        <JetInput
+                            id="email"
+                            v-model="form.email"
+                            type="email"
+                            class="mt-1 block w-full"
+                            required
+                            autofocus
+                        />
+                    </div>
+
+                    <div class="mt-4">
+                        <JetLabel for="password" value="Password" />
+                        <JetInput
+                            id="password"
+                            v-model="form.password"
+                            type="password"
+                            class="mt-1 block w-full"
+                            required
+                            autocomplete="current-password"
+                        />
+                    </div>
+                    <div class="flex items-center justify-end mt-4">
+                        <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" style="background-color: red">
+                            Log in
+                        </JetButton>
+                    </div>
+                </form>
+            </JetAuthenticationCard>
         </div>
-
-        <form @submit.prevent="submit">
-            <div>
-                <JetLabel for="email" value="Email" />
-                <JetInput
-                    id="email"
-                    v-model="form.email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    required
-                    autofocus
-                />
-            </div>
-
-            <div class="mt-4">
-                <JetLabel for="password" value="Password" />
-                <JetInput
-                    id="password"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
-                    autocomplete="current-password"
-                />
-            </div>
-
-            <div class="block mt-4">
-<!--                <label class="flex items-center">-->
-<!--                    <JetCheckbox v-model:checked="form.remember" name="remember" />-->
-<!--                    <span class="ml-2 text-sm text-gray-600">Remember me</span>-->
-<!--                </label>-->
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-<!--                <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900">-->
-<!--                    Forgot your password?-->
-<!--                </Link>-->
-
-                <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </JetButton>
-            </div>
-        </form>
-    </JetAuthenticationCard>
+    </div>
 </template>
+
+<style lang="scss" >
+
+.log-in-pannel{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .holder{
+        width: 100%;
+        height: 100%;
+        background-color: red;
+        display: flex;
+
+        .bright-description{
+            width: 50%;
+            height: 100%;
+            background-color: #262626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .icon-section{
+                width: 350px;
+                height: 400px;
+            }
+        }
+
+        h4{
+            font-size: 2em;
+            padding: 20px;
+        }
+    }
+}
+
+
+</style>
+

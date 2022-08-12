@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -37,6 +38,8 @@ class UserController extends Controller
 
         $user->save();
 
+        Session::flash('sess_message',"User was created Successfully");
+
         return Redirect::to('/users');
     }
 
@@ -56,6 +59,8 @@ class UserController extends Controller
 
         $user->save();
 
+        Session::flash('sess_message',"User was updated Successfully");
+
         return Redirect::to('/users');
     }
 
@@ -64,6 +69,8 @@ class UserController extends Controller
         $user->password = bcrypt ($request->new_password);
 
         $user->save ();
+
+        Session::flash('sess_message',"Password was updated Successfully");
 
         return Redirect::back ();
     }
