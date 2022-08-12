@@ -67,39 +67,6 @@
                 </div>
             </section>
         </div>
-        <section class="particulars-section">
-            <div class="table-holder">
-                <table class="table table-sm" id="items_table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Item</th>
-                        <th scope="col" style="border-bottom: 1px solid black" >Qnt</th>
-                        <th scope="col" style="border-bottom: 1px solid black" >Each</th>
-                        <th scope="col" style="border-bottom: 1px solid black" >Sub Total</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(key,item) in 5" :key="key">
-                        <th>
-                            <input type="text">
-                        </th>
-                        <td>
-                            <input type="number">
-                        </td>
-                        <td>
-                            <input type="number">
-                        </td>
-                        <td>
-                            <input type="number">
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="error_display">
-<!--                <span>The table is not filled correctly</span>-->
-            </div>
-        </section>
         <div class="footer-section">
             <div class="comments-section">
                 <div class="mini-form">

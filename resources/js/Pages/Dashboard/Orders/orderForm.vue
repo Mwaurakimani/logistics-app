@@ -30,7 +30,7 @@
                 <h5>Procurement Details</h5>
                 <procurement-form :order_details="order" :procurement="procurement" :user="this.$attrs.user"/>
             </div>
-            <div class="user-details-section">
+            <div v-if="order" class="user-details-section">
                 <h5>Finance Details</h5>
                 <finance-form :order_form="order" :finance="finance" :user="this.$attrs.user"/>
             </div>

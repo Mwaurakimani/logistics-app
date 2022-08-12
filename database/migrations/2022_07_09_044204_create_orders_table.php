@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('contact_name')->nullable ();
             $table->string('contact_phone')->nullable ();
             $table->string('contact_address');
-            $table->string('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->date('proposed_delivery_date')->nullable ();
             $table->string('comments')->nullable ();
             $table->string('lpo_number');
@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string ('payment_status');
             $table->string ('delivery_status');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

@@ -23,6 +23,9 @@ return new class extends Migration
             $table->text('full_details')->nullable ();
             $table->unsignedBigInteger ('delivery_id');
             $table->timestamps();
+
+            $table->foreign('delivery_id')->references('id')->on('delivers');
+
         });
     }
 

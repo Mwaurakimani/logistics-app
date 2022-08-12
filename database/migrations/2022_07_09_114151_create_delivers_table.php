@@ -23,8 +23,11 @@ return new class extends Migration
             $table->string ('vehicle_id')->nullable ();
             $table->string ('estimated_time_of_arrival')->nullable ();
             $table->string ('comment')->nullable ();
-            $table->string ('order_id')->nullable ();
+            $table->unsignedBigInteger ('order_id');
             $table->timestamps();
+
+
+            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 

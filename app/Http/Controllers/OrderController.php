@@ -17,7 +17,9 @@ class OrderController extends Controller
 {
     public function list_orders()
     {
-        $orders = Order::paginate(15);
+        $orders = Order::latest()->paginate(15);
+
+
 
         $orders->getCollection()->transform(function ($item, $key) {
 
