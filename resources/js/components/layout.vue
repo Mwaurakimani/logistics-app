@@ -1,6 +1,6 @@
 <template>
     <div id="dashboard-display">
-        <side-nav  :key="componentKey" @reload_comp = 'rerender_component'/>
+        <side-nav  :key="componentKey" :user="$attrs.user" @reload_comp = 'rerender_component'/>
         <section id="dashboard-content">
             <top-navigation/>
             <slot></slot>

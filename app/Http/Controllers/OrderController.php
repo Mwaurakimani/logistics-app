@@ -18,9 +18,11 @@ class OrderController extends Controller
 {
     public function list_orders()
     {
-        $orders = Order::latest()->paginate(15);
-
-
+        if (Auth::user()->account_type == 'Sales') {
+            $orders = Order::where('user_id',Auth::user()->id)->latest()->paginate(15);
+        } else {
+            $orders = Order::latest()->paginate(15);
+        }
 
         $orders->getCollection()->transform(function ($item, $key) {
 
@@ -45,7 +47,7 @@ class OrderController extends Controller
         $status = $request['status'];
         $apply_filters = $request['filters_applies'];
 
-        $query = DB::table('orders');
+        $query = DB::table('orders')->where('user_id',Auth::user());
 
         if ($apply_filters) {
             if ($search_id) {

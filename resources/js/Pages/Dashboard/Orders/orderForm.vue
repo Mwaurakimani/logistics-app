@@ -35,34 +35,34 @@
                 <finance-form :order_form="order" :finance="finance" :user="this.$attrs.user"/>
             </div>
         </div>
-<!--        <div class="details-section-order">-->
-<!--            <div class="form-section">-->
-<!--                <div class="user-details-section">-->
-<!--                    <h5>Shipment Details</h5>-->
+        <div class="details-section-order">
+            <div class="form-section">
+                <div class="user-details-section">
+                    <h5>Shipment Details</h5>
 
-<!--                    <div class="form-item">-->
-<!--                        <div class="input-group">-->
-<!--                            <label for="">Payment Status</label>-->
-<!--                            <select name="" id="" v-model="order_form_holder.payment_status">-->
-<!--                                <option value="Payment pending">Payment pending</option>-->
-<!--                                <option value="Payed">Payed</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                        <div class="input-group">-->
-<!--                            <label for="">Delivery Status</label>-->
-<!--                            <select name="" id="" v-model="order_form_holder.delivery_status">-->
-<!--                                <option value="Approval pending">Approval pending</option>-->
-<!--                                <option value="Approved">Approved</option>-->
-<!--                                <option value="Dispatched">Dispatched</option>-->
-<!--                                <option value="Transit">Transit</option>-->
-<!--                                <option value="Delivered">Delivered</option>-->
-<!--                                <option value="Fulfilled">Fulfilled</option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+                    <div class="form-item">
+                        <div class="input-group">
+                            <label for="">Payment Status</label>
+                            <select name="" id="" v-model="order_form_holder.payment_status">
+                                <option value="Payment pending">Payment pending</option>
+                                <option value="Payed">Payed</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="">Delivery Status</label>
+                            <select name="" id="" v-model="order_form_holder.delivery_status">
+                                <option value="Approval pending">Approval pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Dispatched">Dispatched</option>
+                                <option value="Transit">Transit</option>
+                                <option value="Delivered">Delivered</option>
+                                <option value="Fulfilled">Fulfilled</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 

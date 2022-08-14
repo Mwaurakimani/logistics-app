@@ -6,7 +6,7 @@
             was given to you on your receipt and in the confirmation email you should have received.</p>
 
         <div class="order_tracker_input">
-            <label for="order_id">Tracking Code</label>
+            <label for="order_id">Tracking ID</label>
             <input id="order_id" type="text" placeholder="Please enter your tracking code" name="order_id" v-model="tracking_form.id">
             <button @click="track_id">Track</button>
         </div>

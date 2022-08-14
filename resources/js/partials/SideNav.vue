@@ -1,26 +1,27 @@
 <template>
     <section id="dashboard-sidebar">
         <div class="logo-section">
-            <p>Bright</p>
+            <img src="/storage/icons/lorry.png" alt="">
         </div>
         <div class="buttons-section">
             <ul @click="rerender_elem">
-                <Link :href="'/dashboard'" as="li">
+                <Link v-show="display_button(['Admin','Procurement','Sales','Finance','Management','Logistics'])" :href="'/dashboard'" as="li">
                     <p>Dashboard</p>
                 </Link>
-                <Link :href="route('dashboard_orders')" as="li" >
-                    <p>Orders</p>
+                <Link v-show="display_button(['Admin','Procurement','Sales','Finance','Management','Logistics'])" :href="route('dashboard_orders')" as="li" >
+                    <p v-if="user.account_type == 'Sales'">Sales</p>
+                    <p v-else-if="user.account_type == 'Logistics'">Deliveries</p>
+                    <p v-else>Orders</p>
                 </Link>
-                <Link :href="route('dashboard_users')" as="li" >
+                <Link v-show="display_button(['Admin','Management'])" :href="route('dashboard_users')" as="li" >
                     <p>User</p>
                 </Link>
-                <Link :href="route('dashboard_vehicles')" as="li" >
+                <Link v-show="display_button(['Admin','Management','Logistics'])" :href="route('dashboard_vehicles')" as="li" >
                     <p>Vehicles</p>
                 </Link>
-                <Link :href="route('dashboard_settings')" as="li" >
+                <Link v-show="display_button(['Admin','Procurement','Sales','Finance','Management','Logistics'])" :href="route('dashboard_settings')" as="li" >
                     <p>Settings</p>
                 </Link>
-
             </ul>
         </div>
     </section>
@@ -47,6 +48,7 @@ function render_elem(){
 
 export default {
     name: 'side-nav',
+    props:['user'],
     components:{
       Link
     },
@@ -55,11 +57,19 @@ export default {
             setTimeout(function () {
                 render_elem();
             }, 1000)
-
+        },
+        display_button(options){
+            if(options.includes(this.user.account_type)){
+                return true
+            }else {
+                return false
+            }
         }
     },
     mounted() {
         this.rerender_elem()
+        console.log(this.$attrs)
+
     }
 
 }
@@ -74,7 +84,13 @@ body {
 #dashboard-sidebar {
   width: 280px;
   height: 100vh;
+    .logo-section{
+        width: 100%;
+        height: 70px;
+        padding: 60px;
+    }
 }
+
 
 
 </style>
