@@ -37,18 +37,18 @@
                         <input type="text" v-model="user_from.phone">
                         <span v-if="this.$attrs.errors.phone"  class="form_error">{{this.$attrs.errors.phone}} </span>
                     </div>
-                    <div class="input-group">
-                        <label for="">Account Type</label>
-                        <select name="" id="" v-model="user_from.account_type">
-                            <option value="none">none</option>
-                            <option value="Admin">Admin</option>
-                            <option value="Management">Management</option>
-                            <option value="Procurement">Procurement</option>
-                            <option value="Sales">Sales</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Logistics">Logistics</option>
-                        </select>
-                    </div>
+<!--                    <div class="input-group">-->
+<!--                        <label for="">Account Type</label>-->
+<!--                        <select name="" id="" v-model="user_from.account_type">-->
+<!--                            <option value="none">none</option>-->
+<!--                            <option value="Admin">Admin</option>-->
+<!--                            <option value="Management">Management</option>-->
+<!--                            <option value="Procurement">Procurement</option>-->
+<!--                            <option value="Sales">Sales</option>-->
+<!--                            <option value="Finance">Finance</option>-->
+<!--                            <option value="Logistics">Logistics</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
                     <div class="input-group">
                         <label for="">Notes</label>
                         <textarea v-model="user_from.notes">
