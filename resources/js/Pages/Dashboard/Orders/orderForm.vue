@@ -6,10 +6,10 @@
                 <Link :href="route('dashboard_orders')" as="li" class="rep-btn">
                     <p>Order List</p>
                 </Link>
-                <li v-if="order" @click="update_order" class="rep-btn">
+                <li  v-if="order && ['Admin','Sales'].includes($attrs.user.account_type)" @click="update_order" class="rep-btn">
                     <p>Update</p>
                 </li>
-                <li v-else @click="create_order" class="rep-btn">
+                <li v-else-if="['Admin','Sales'].includes($attrs.user.account_type)" @click="create_order" class="rep-btn">
                     <p>save</p>
                 </li>
                 <Link v-if="order" :href="route('dashboard_orders_delivery_Details',[order.id])" as="li"
@@ -24,13 +24,13 @@
         <div class="form-section">
             <div class="user-details-section">
                 <h5>Order Details</h5>
-                <order-display-form :order_form="order_form_holder" :user="this.$attrs.user" :errors="errors"/>
+                <order-display-form :order_form="order_form_holder" :procurement="procurement" :user="this.$attrs.user" :errors="errors"/>
             </div>
-            <div v-if="order" class="user-details-section">
+            <div v-if="order && ['Admin','Procurement'].includes($attrs.user.account_type)" class="user-details-section">
                 <h5>Procurement Details</h5>
-                <procurement-form :order_details="order" :procurement="procurement" :user="this.$attrs.user"/>
+                <procurement-form  :order_details="order" :procurement="procurement" :user="this.$attrs.user"/>
             </div>
-            <div v-if="order" class="user-details-section">
+            <div v-if="order && ['Admin','Finance'].includes($attrs.user.account_type)" class="user-details-section">
                 <h5>Finance Details</h5>
                 <finance-form :order_form="order" :finance="finance" :user="this.$attrs.user"/>
             </div>
@@ -98,7 +98,8 @@ export default {
                 lpo_value: this.order ? this.order.lpo_value : null,
                 payment_status: this.order ? this.order.payment_status : 'Payment pending',
                 delivery_status: this.order ? this.order.delivery_status : 'Approval pending',
-                tb: null
+                tb: null,
+                opfFile:null
             }),
             errors: this.$attrs.errors
         }

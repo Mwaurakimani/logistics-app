@@ -9,7 +9,7 @@
                 <Link :href="route('dashboard_select_order',[order])" as="li" class="rep-btn">
                     <p>Order</p>
                 </Link>
-                <li v-if="delivery.length > 0" @click="update_delivery" class="rep-btn">
+                <li v-if="delivery.length > 0 && ['Admin','Logistics'].includes($attrs.user.account_type)" @click="update_delivery" class="rep-btn">
                     <p>Update Delivery</p>
                 </li>
             </ul>
@@ -23,10 +23,11 @@
             :Vehicles="Vehicles"
             :comment="comment"
             :errors="errors.errors"
+            :user_account = $attrs.user
     />
     <div v-else class="no_delivery">
         <p>No delivery available</p>
-        <button @click="create_delivery">Create Delivery</button>
+        <button v-if="['Admin','Logistics'].includes($attrs.user.account_type)" @click="create_delivery">Create Delivery</button>
     </div>
 </template>
 

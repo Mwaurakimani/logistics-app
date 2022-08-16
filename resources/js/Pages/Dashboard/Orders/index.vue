@@ -3,7 +3,7 @@
     <div class="action-bar">
         <div class="button-section">
             <ul>
-                <Link :href="route('dashboard_add_order')" as="li">
+                <Link v-if="['Admin','Sales'].includes($attrs.user.account_type)" :href="route('dashboard_add_order')" as="li">
                     <p class="rep-btn">Add Order</p>
                 </Link>
             </ul>

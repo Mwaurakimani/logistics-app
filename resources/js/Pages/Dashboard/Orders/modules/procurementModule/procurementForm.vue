@@ -1,16 +1,8 @@
 <template>
     <form action="" @submit.prevent>
         <div class="header-section">
-            <section class="customer-section">
-                <h4>OPF Entry</h4>
-                <input type="file" @input="procurementForm.opfFile = $event.target.files[0]">
-            </section>
-            <section class="sales-rep-section" v-if="procurement.length > 0 && procurement[0].opf_file_path">
-                <div class="sales-section">
-                    <h4>OPF Entry</h4>
-                    <a :href="'/storage/'+file_path" target="_blank">Download</a>
-                </div>
-            </section>
+
+
             <section class="sales-rep-section">
                 <div class="sales-section">
                     <h4>Order Fulfilment Status</h4>
@@ -107,19 +99,6 @@ form {
   .customer-section {
     width: 370px;
   }
-
-  .sales-rep-section {
-    width: 370px;
-
-    & a {
-      background-color: red;
-      padding: 5px 10px;
-      border-radius: 8px;
-      color: white;
-    }
-  }
-
-
 }
 
 .particulars-section {

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('status');
             $table->text('comment')->nullable ();
             $table->timestamps();
+
+            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 

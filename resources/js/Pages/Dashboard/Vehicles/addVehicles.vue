@@ -42,8 +42,8 @@
                     <textarea v-model="vehicle.notes"></textarea>
                 </div>
 
-                <button v-if="Vehicle != null && Vehicle != 'undefined'" @click="update_vehicle" >Update</button>
-                <button v-else @click="add_vehicle" >Create</button>
+                <button v-if="Vehicle != null && Vehicle != 'undefined' && ['Admin','Sales'].includes($attrs.user.account_type)" @click="update_vehicle" >Update</button>
+                <button v-else-if="['Admin','Sales'].includes($attrs.user.account_type)" @click="add_vehicle" >Create</button>
             </form>
         </div>
         <div class="details_section">

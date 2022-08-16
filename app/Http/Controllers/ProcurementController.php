@@ -34,8 +34,8 @@ class ProcurementController extends Controller
         $file = $request->file ('opfFile');
 
         $procurement->order_id = $order_id;
-        $procurement->status = $request['status'];
-        $procurement->comments = $request['comments'];
+        $procurement->status = $request['status'] ?? 'Pending';
+        $procurement->comments = $request['comments'] ?? 'Pending';
 
         if ($file) {
             $procurement->opf_file_path = $this->uploading_opf ($file, $order_id);
@@ -49,8 +49,8 @@ class ProcurementController extends Controller
     public function update_procurement ($procurement, $request, $order_id)
     {
         $file = $request->file ('opfFile');
-        $procurement->status = $request['status'];
-        $procurement->comments = $request['comments'];
+        $procurement->status = $request['status'] ?? $procurement->status;
+        $procurement->comments = $request['comments'] ?? $procurement->comments;
 
         if ($file) {
             $procurement->opf_file_path = $this->uploading_opf ($file, $order_id);

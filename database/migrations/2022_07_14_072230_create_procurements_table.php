@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('comments')->nullable ();
             $table->string('opf_file_path') ->nullable ();
             $table->timestamps();
+
+            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 

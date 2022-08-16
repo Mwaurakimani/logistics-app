@@ -6,7 +6,7 @@
                 <form action="">
                     <section>
                         <div>
-                            <h4>Tracking Code:</h4>
+                            <h4>Tracking ID:</h4>
                             <p>{{ tracking_code }}</p>
                         </div>
                         <div class="input-group">
@@ -103,7 +103,7 @@
                 </div>
             </section>
         </section>
-        <section class="form-entry">
+        <section v-if="['Admin','Logistics'].includes(user_account.account_type)" class="form-entry">
             <h5>Progress Entry</h5>
             <form action="" v-on:submit.prevent="">
                 <div class="input-group">
@@ -150,7 +150,7 @@
 <script>
 export default {
     name: 'delivery-form',
-    props: ['delivery','tracking_code','stages','Vehicles','errors'],
+    props: ['delivery','tracking_code','stages','Vehicles','errors','user_account'],
     data(){
         return {
             stage_form: this.$inertia.form({
@@ -390,7 +390,6 @@ body {
 .customer_feedback{
     width: 96%;
     margin: auto;
-    height: 300px;
     background-color: #f3f3f3;
     border-radius: 8px;
     padding: 10px;

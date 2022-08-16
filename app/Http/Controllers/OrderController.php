@@ -103,6 +103,11 @@ class OrderController extends Controller
 
         $order->save();
 
+
+        $procurement = new ProcurementController();
+
+        $procurement->create_procurement($request,$order->id);
+
         Session::flash('sess_message',"Order was created Successfully");
 
         return Redirect::to('/orders');
@@ -137,9 +142,12 @@ class OrderController extends Controller
 
         $Order->save();
 
-        Session::flash('sess_message',"Order was Updated Successfully");
+        $proc = Procurement::where('order_id',$Order->id)->get()[0];
 
-        ItemController::add_item($Order,$request['tb']);
+        $procurement = new ProcurementController();
+        $procurement->update_procurement($proc, $request, $Order->id);
+
+        Session::flash('sess_message',"Order was Updated Successfully");
 
         return Redirect::to('/orders');
     }

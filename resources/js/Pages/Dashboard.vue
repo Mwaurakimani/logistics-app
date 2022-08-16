@@ -61,9 +61,9 @@
         </div>
     </div>
 
-    <h2>Order Section</h2>
+    <h2 v-if="['Admin','Sales'].includes($attrs.user.account_type)" >Order Section</h2>
 
-    <div class="sales-rep-section">
+    <div v-if="['Admin','Sales'].includes($attrs.user.account_type)" class="sales-rep-section">
         <div class="order-list">
             <div class="search-section">
                 <input type="text" placeholder="Search by order id" @keyup="search_order">
@@ -86,7 +86,7 @@
                     :errors="errors"
                 ></order-display-form>
                 <div class="action-section">
-                    <button v-if="order_form_holder && order_form_holder.customer_name !=  null" @click="update_order(order_data.id)" >Update</button>
+                    <button v-if="order_form_holder && order_form_holder.id !=  null" @click="update_order(order_data.id)" >Update</button>
                     <button v-else @click="create_order">Create</button>
                 </div>
             </div>

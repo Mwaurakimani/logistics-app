@@ -37,19 +37,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="delivery-section">
-                    <h4>Delivery Details</h4>
-                    <div class="mini-form">
-                        <div class="input-group">
-                            <label for="">Proposed DD:</label>
-                            <input type="date" v-model="order_form.proposed_delivery_date">
-                            <span v-if="errors.proposed_delivery_date" class="form_error text-left"
-                                  style="margin-left: 120px">{{ errors.proposed_delivery_date }}</span>
-                        </div>
-                    </div>
-                </div>
                 <div class="payment-section">
-                    <h4>Payment</h4>
+                    <h4>LPO Details</h4>
                     <div class="mini-form">
                         <div class="input-group">
                             <label for="">LPO number</label>
@@ -63,9 +52,36 @@
                             <span v-if="errors.lpo_value" class="form_error text-left"
                                   style="margin-left: 120px">{{ errors.lpo_value }}</span>
                         </div>
+
                     </div>
                 </div>
+
+                <div class="delivery-section mb-[50px]">
+                    <h4>Delivery Details</h4>
+                    <div class="mini-form">
+                        <div class="input-group">
+                            <label for="">Proposed DD:</label>
+                            <input type="date" v-model="order_form.proposed_delivery_date">
+                            <p>{{   }}</p>
+                            <span v-if="errors.proposed_delivery_date" class="form_error text-left"
+                                  style="margin-left: 120px">{{ errors.proposed_delivery_date }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="customer-section mb-[40px]">
+                    <h4>OPF Entry</h4>
+                    <input type="file" @input="order_form.opfFile = $event.target.files[0]">
+                </section>
+
+                <section class="sales-rep-section" v-if="procurement && procurement.length > 0 && procurement[0].opf_file_path">
+                    <div class="sales-section">
+                        <h4>OPF Entry</h4>
+                        <a :href="'/storage/'+file_path" target="_blank">Download</a>
+                    </div>
+                </section>
             </section>
+
         </div>
         <div class="footer-section">
             <div class="comments-section">
@@ -84,7 +100,25 @@
 <script>
 export default {
     name: "orderDisplayForm",
-    props: ['order_form', 'user', 'errors'],
+    props: ['order_form', 'user', 'errors','procurement'],
+    computed:{
+        file_path(){
+            let path = this.procurement[0].opf_file_path;
+            path = path.split('/');
+            path.shift();
+            path = path.join('/')
+
+            return path;
+        } ,
+    },
+    methods:{
+      change_date(date){
+
+          console.log(date);
+          const [year, month, day] = date.split('-');
+
+      }
+    },
     mounted() {
         console.log(this.errors)
     }
@@ -92,6 +126,17 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+
+.sales-rep-section {
+    width: 370px;
+
+    & a {
+        background-color: red;
+        padding: 5px 10px;
+        border-radius: 8px;
+        color: white;
+    }
+}
 
 h4 {
     font-weight: 500;
