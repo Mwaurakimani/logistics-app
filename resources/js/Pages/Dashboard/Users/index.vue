@@ -20,8 +20,8 @@
                     <th scope="col">Username</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
+                    <th scope="col">Account Type</th>
                     <th scope="col">Date Created</th>
-                    <th scope="col">Last Update</th>
 
                 </tr>
             </thead>
@@ -31,8 +31,8 @@
                     <td>{{ user.username }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.phone }}</td>
+                    <td>{{ user.account_type }}</td>
                     <td>{{ user.created_at }}</td>
-                    <td>{{ user.updated_at }}</td>
                 </Link>
             </tbody>
         </table>

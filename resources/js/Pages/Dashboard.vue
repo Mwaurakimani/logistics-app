@@ -141,6 +141,8 @@ export default {
                 lpo_value: this.order_data ? this.order_data.lpo_value : null,
                 payment_status: this.order_data ? this.order_data.payment_status : 'Payment pending',
                 delivery_status: this.order_data ? this.order_data.delivery_status : 'Approval pending',
+                tb: null,
+                opfFile:null
             }),
             recent_data: {...this.recent_orders},
             errors:this.$attrs.errors

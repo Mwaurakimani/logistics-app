@@ -10,19 +10,21 @@
             <input id="order_id" type="text" placeholder="Please enter your tracking code" name="order_id" v-model="tracking_form.id">
             <button @click="track_id">Track</button>
         </div>
-        <Footer/>
+        <app-footer/>
     </layout>
 </template>
 
 <script>
 import MainNavigation from "../partials/MainNavigation.vue";
-import Footer from "../partials/Footer.vue";
+import appFooter from "../partials/appFooter.vue";
 import layout from "../components/defaultLayout.vue";
+
+
 
 export default {
     components: {
         MainNavigation,
-        Footer,
+        appFooter,
         layout
     },
     data(){
@@ -36,6 +38,15 @@ export default {
         track_id(){
             this.tracking_form.post(route('track_delivery_by_id'));
         }
+    },
+    mounted() {
+        document.addEventListener('keyup', (event) =>{
+            let key = event.key;
+
+            if(key === 'Enter'){
+                this.track_id()
+            }
+        })
     }
 }
 </script>

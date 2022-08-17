@@ -19,9 +19,9 @@
                 <Link v-show="display_button(['Admin','Management','Logistics'])" :href="route('dashboard_vehicles')" as="li" >
                     <p>Vehicles</p>
                 </Link>
-                <Link v-show="display_button(['Admin','Procurement','Sales','Finance','Management','Logistics'])" :href="route('dashboard_settings')" as="li" >
-                    <p>Settings</p>
-                </Link>
+<!--                <Link v-show="display_button(['Admin','Procurement','Sales','Finance','Management','Logistics'])" :href="route('dashboard_get_user',[user.id])" as="li" >-->
+<!--                    <p>Settings</p>-->
+<!--                </Link>-->
             </ul>
         </div>
     </section>
@@ -68,10 +68,7 @@ export default {
     },
     mounted() {
         this.rerender_elem()
-        console.log(this.$attrs)
-
     }
-
 }
 </script>
 <style lang="scss" scoped>

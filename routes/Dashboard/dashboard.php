@@ -31,7 +31,7 @@ Route::middleware (['auth:sanctum', config ('jetstream.auth_session'), 'verified
          //display the user form
          Route::get('/users/create', function () {
              return Inertia::render ('Dashboard/Users/userForm',[
-                 'user'=>null
+                 'selected_user'=>null
              ]);
          })->name ('dashboard_add_users');
 

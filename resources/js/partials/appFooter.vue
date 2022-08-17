@@ -79,7 +79,7 @@
 </template>
 <script>
 export default {
-    name: 'footer',
+    name: 'appFooter',
 }
 </script>
 <style lang="scss" scoped>

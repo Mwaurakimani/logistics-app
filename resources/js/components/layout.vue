@@ -2,7 +2,7 @@
     <div id="dashboard-display">
         <side-nav  :key="componentKey" :user="$attrs.user" @reload_comp = 'rerender_component'/>
         <section id="dashboard-content">
-            <top-navigation/>
+            <top-navigation :username="$attrs.user" />
             <slot></slot>
         </section>
         <div v-show="$attrs.session_message" class="info-bubble" id="info_bubble">
@@ -45,7 +45,7 @@ export default {
             this.componentKey = !this.componentKey
         },
         ...mapMutations(['display_info_bubble'])
-    }
+    },
 }
 </script>
 

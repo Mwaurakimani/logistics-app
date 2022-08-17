@@ -2,19 +2,16 @@
     <section id="dashboard-navigation">
         <div class="search-section">
             <div class="input-section">
-                <input type="text" placeholder="Search...">
+                <p>Welcome, {{username.username}}</p>
             </div>
             <div class="helper-section">
 
             </div>
         </div>
         <div class="account-action-section">
-<!--            <div class="icon-section">-->
-<!--                <img src="/storage/icons/user.png" alt="">-->
-<!--            </div>-->
-            <div class="icon-section rep-btn">
+            <Link :href="'/users/'+username.id" class="icon-section rep-btn">
                 <img title="account" src="/storage/icons/user.png" alt="">
-            </div>
+            </Link>
             <Link as="div" class="icon-section rep-btn" :href="'/'">
                 <img title="Home page" src="/storage/icons/home.png" alt="">
             </Link>
@@ -27,6 +24,7 @@
 <script>
 export default {
     name: 'top-navigation',
+    props:['username'],
     methods:{
         logout(){
             axios.post('/logout')

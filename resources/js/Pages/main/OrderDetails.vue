@@ -70,7 +70,7 @@
 
 <script>
 import MainNavigation from "../../partials/MainNavigation.vue";
-import Footer from "../../partials/Footer.vue";
+import Footer from "../../partials/appFooter.vue";
 import TrackerElement from "./TrackerElement.vue";
 import layout from "../../components/defaultLayout.vue";
 
@@ -126,6 +126,9 @@ export default {
             this.form.post(route('post_comment',[this.delivery_id]));
         }
     },
+    mounted(){
+        console.log("mounted")
+    }
 }
 </script>
 

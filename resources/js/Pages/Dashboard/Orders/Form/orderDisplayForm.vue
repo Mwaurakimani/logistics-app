@@ -33,7 +33,7 @@
                     <div class="mini-form">
                         <div class="input-group">
                             <label for="">Sales Rep:</label>
-                            <input style="border:none" type="text" v-model="order_form.user_id">
+                            <input id="un-editable" style="border:none;outline: transparent" readonly  type="text" v-model="order_form.user_id">
                         </div>
                     </div>
                 </div>
@@ -62,24 +62,13 @@
                         <div class="input-group">
                             <label for="">Proposed DD:</label>
                             <input type="date" v-model="order_form.proposed_delivery_date">
-                            <p>{{   }}</p>
                             <span v-if="errors.proposed_delivery_date" class="form_error text-left"
                                   style="margin-left: 120px">{{ errors.proposed_delivery_date }}</span>
                         </div>
                     </div>
                 </div>
 
-                <section class="customer-section mb-[40px]">
-                    <h4>OPF Entry</h4>
-                    <input type="file" @input="order_form.opfFile = $event.target.files[0]">
-                </section>
 
-                <section class="sales-rep-section" v-if="procurement && procurement.length > 0 && procurement[0].opf_file_path">
-                    <div class="sales-section">
-                        <h4>OPF Entry</h4>
-                        <a :href="'/storage/'+file_path" target="_blank">Download</a>
-                    </div>
-                </section>
             </section>
 
         </div>
@@ -88,11 +77,24 @@
                 <div class="mini-form">
                     <div class="input-group">
                         <label for="">Comment:</label>
-                        <textarea v-model="order_form.comments"></textarea>
+                        <textarea class="h-[170px]" v-model="order_form.comments"></textarea>
                     </div>
                 </div>
             </div>
 
+            <div class="opf-entry-sect w-[370px]">
+                <section class="customer-section mb-[40px]">
+                    <h4 >Attach OPF</h4>
+                    <input class="ml-[100px] inline-block w-[280px]" type="file" @input="order_form.opfFile = $event.target.files[0]">
+                </section>
+
+                <section class="sales-rep-section" v-if="procurement && procurement.length > 0 && procurement[0].opf_file_path">
+                    <div class="sales-section">
+                        <h4>Download OPF</h4>
+                        <a class="ml-[100px]" :href="'/storage/'+file_path" target="_blank">Download</a>
+                    </div>
+                </section>
+            </div>
         </div>
     </form>
 </template>
@@ -113,19 +115,25 @@ export default {
     },
     methods:{
       change_date(date){
-
-          console.log(date);
           const [year, month, day] = date.split('-');
 
       }
     },
     mounted() {
-        console.log(this.errors)
     }
 }
 </script>
 
 <style lang='scss' scoped>
+
+#un-editable{
+    border: none;
+    outline: none;
+    &:active{
+        border: none;
+        outline: none;
+    }
+}
 
 .sales-rep-section {
     width: 370px;
