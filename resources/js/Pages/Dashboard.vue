@@ -47,9 +47,9 @@
     <div class="chart-section">
         <div class="line-chart">
             <h4>Statistics</h4>
-            <div id="area-chart" class="chart-area">
+                <div id="area-chart" class="chart-area">
 
-            </div>
+                </div>
         </div>
         <div class="doughnut-chart">
             <h4>Statistics</h4>
@@ -118,13 +118,13 @@ export default {
                 orders_pending: [],
                 issues: []
             }
+        },
+        bar_chart_data:{
+            type:Object
         }
     },
     components: {
         orderDisplayForm
-    },
-    watch(){
-
     },
     data(){
         return {
@@ -148,32 +148,18 @@ export default {
             errors:this.$attrs.errors
         }
     },
-
     methods:{
         drawChart1() {
-            var data = google.visualization.arrayToDataTable([
-                ['Month', 'Sales', 'Expenses'],
-                ['Jan',  1000,      400],
-                ['Feb',  1170,      460],
-                ['Mar',  660,       1120],
-                ['Apr',  1030,      540],
-                ['May',  1030,      540],
-                ['June',  1030,      540],
-                ['July',  1030,      540],
-                ['Aug',  1030,      540],
-                ['Sep',  1030,      540],
-                ['Oct',  1030,      540],
-                ['Nov',  1030,      540],
-                ['Dec',  1030,      540],
-            ]);
+            var data = google.visualization.arrayToDataTable(this.bar_chart_data);
 
             var options = {
-                title: 'Company Performance',
-                hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
-                vAxis: {minValue: 0}
+                chart: {
+                    title: 'Company Performance',
+                    subtitle: '',
+                }
             };
 
-            var chart = new google.visualization.AreaChart(document.getElementById('area-chart'));
+            var chart = new google.charts.Bar(document.getElementById('area-chart'));
             chart.draw(data, options);
         },
         drawChart2() {
@@ -199,7 +185,6 @@ export default {
         update_order(id){
             this.order_form_holder.post(route('put_order',id))
         },
-
 
         search_order(){
             let value = $(event.currentTarget).val();
@@ -239,8 +224,10 @@ export default {
         }
     },
     mounted() {
-        google.charts.load('current', {packages: ['corechart']});
+        google.charts.load('current', {'packages':['bar']});
         google.charts.setOnLoadCallback(this.drawChart1);
+
+        google.charts.load('current', {packages: ['corechart']});
         google.charts.setOnLoadCallback(this.drawChart2);
     }
 }

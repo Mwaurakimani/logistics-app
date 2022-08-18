@@ -127,7 +127,6 @@ export default {
 
             // window.location.pathname
 
-            // console.log(url_path)
             // return;
             // let path = window.location.pathname;
             // return;

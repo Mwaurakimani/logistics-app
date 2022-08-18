@@ -18,11 +18,14 @@ class DashboardController extends Controller
 
         $topData = $this->get_top_data();
 
+        $bar_chart_data = $this->barchart_data();
+
 
         return Inertia::render('Dashboard', [
             'order' => null,
             'recent_orders' => $recent_orders,
             'top_data' => $topData,
+            'bar_chart_data' => $bar_chart_data
         ]);
     }
 
@@ -87,18 +90,18 @@ class DashboardController extends Controller
 
         $proc = DB::table('procurements')
             ->select('order_id')
-            ->where('status','Unfulfillable');
+            ->where('status', 'Unfulfillable');
 
         $partials = DB::table('procurements')
             ->select('order_id')
-            ->where('status','Partially Fulfillable');
+            ->where('status', 'Partially Fulfillable');
 
         $issues = DB::table('orders')
-            ->where('user_id',Auth::user()->id)
+            ->where('user_id', Auth::user()->id)
             ->whereIn('id',
                 $proc = DB::table('finances')
                     ->select('order_id')
-                    ->where('status','Rejected')
+                    ->where('status', 'Rejected')
                     ->union($proc)
                     ->union($partials)
             )->get();
@@ -121,5 +124,53 @@ class DashboardController extends Controller
             'orders_pending' => $orders_pending,
             'issues' => $issues,
         );
+    }
+
+    public function barchart_data()
+    {
+        $sales_by_date = DB::table('orders')->selectRaw('year(created_at) as year, month(created_at) as month,count(id) as records')
+            ->whereRaw('year(curdate()) = year(created_at)')
+            ->groupByRaw('year,month')->get();
+
+        $sales_delivered = DB::select("SELECT year(delivers.estimated_time_of_arrival) as year,month(delivers.estimated_time_of_arrival) as month, COUNT(orders.id) as records
+                                                from orders,delivers
+                                                WHERE orders.id = delivers.id
+                                                AND orders.delivery_status = 'Fulfilled'
+                                                GROUP BY year,month;");
+
+
+        $get_sales_received = function ($month, $year) use ($sales_by_date) {
+            $entries = $sales_by_date->filter(function ($data) use ($month, $year) {
+                return ($data->month == $month && $data->year == $year);
+            })->first();
+
+            return $entries ? $entries->records : 0;
+        };
+
+        $get_orders_delivered = function ($month, $year) use ($sales_delivered) {
+            $entries = collect($sales_delivered)->filter(function ($data) use ($month, $year) {
+                return ($data->month == $month && $data->year == $year);
+            })->first();
+
+            return $entries ? $entries->records : 0;
+        };
+
+        $data = [
+          ['Months','Orders Received','Orders Delivered'],
+            ['Jan',$get_sales_received(1,2022),$get_orders_delivered(1,2022)],
+            ['Feb',$get_sales_received(2,2022),$get_orders_delivered(2,2022)],
+            ['Mar',$get_sales_received(3,2022),$get_orders_delivered(3,2022)],
+            ['Apr',$get_sales_received(4,2022),$get_orders_delivered(4,2022)],
+            ['May',$get_sales_received(5,2022),$get_orders_delivered(5,2022)],
+            ['Jun',$get_sales_received(6,2022),$get_orders_delivered(6,2022)],
+            ['Jul',$get_sales_received(7,2022),$get_orders_delivered(7,2022)],
+            ['Aug',$get_sales_received(8,2022),$get_orders_delivered(8,2022)],
+            ['Sep',$get_sales_received(9,2022),$get_orders_delivered(9,2022)],
+            ['Oct',$get_sales_received(10,2022),$get_orders_delivered(10,2022)],
+            ['Nov',$get_sales_received(11,2022),$get_orders_delivered(11,2022)],
+            ['Dec',$get_sales_received(12,2022),$get_orders_delivered(12,2022)],
+        ];
+
+        return $data;
     }
 }
