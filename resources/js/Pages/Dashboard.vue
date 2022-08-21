@@ -44,7 +44,7 @@
         </Link>
     </div>
 
-    <div class="chart-section">
+    <div v-if="!['Sales'].includes($attrs.user.account_type)" class="chart-section">
         <div class="line-chart">
             <h4>Statistics</h4>
                 <div id="area-chart" class="chart-area">
@@ -82,8 +82,10 @@
             <div class="order-form">
                 <order-display-form
                     :order_form="order_form_holder"
+                    :procurement = "procurement"
                     :key="this.order_data.id ?? 1"
                     :errors="errors"
+                    :user="$attrs.user"
                 ></order-display-form>
                 <div class="action-section">
                     <button v-if="order_form_holder && order_form_holder.id !=  null" @click="update_order(order_data.id)" >Update</button>
@@ -145,6 +147,7 @@ export default {
                 opfFile:null
             }),
             recent_data: {...this.recent_orders},
+            procurement:null,
             errors:this.$attrs.errors
         }
     },
@@ -154,7 +157,7 @@ export default {
 
             var options = {
                 chart: {
-                    title: 'Company Performance',
+                    title: '',
                     subtitle: '',
                 }
             };
@@ -218,6 +221,7 @@ export default {
                 id:value
             }).then((response) => {
                 this.order_data = response.data
+                this.procurement = [response.data.procurements]
                 response.data.user_id = this.$attrs.user.username
                 this.order_form_holder = {...this.order_form_holder,...response.data};
             });

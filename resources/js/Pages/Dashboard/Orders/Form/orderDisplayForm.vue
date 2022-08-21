@@ -6,25 +6,29 @@
                 <div class="mini-form">
                     <div class="input-group">
                         <label for="">Name:</label>
-                        <input type="text" v-model="order_form.customer_name">
+                        <input v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" type="text" v-model="order_form.customer_name">
+                        <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.customer_name  }}</p>
                         <span v-if="errors.customer_name" class="form_error text-right"
                               style="margin-right: 30px">{{ errors.customer_name }}</span>
                     </div>
                     <div class="input-group">
                         <label for="">Contact Name:</label>
-                        <input type="text" v-model="order_form.contact_name">
+                        <input v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" type="text" v-model="order_form.contact_name">
+                        <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.contact_name  }}</p>
                         <span v-if="errors.contact_name" class="form_error text-right"
                               style="margin-right: 30px">{{ errors.contact_name }}</span>
                     </div>
                     <div class="input-group">
                         <label for="">Tel:</label>
-                        <input type="tel" v-model="order_form.contact_phone">
+                        <input v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" type="tel" v-model="order_form.contact_phone">
+                        <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.contact_phone  }}</p>
                         <span v-if="errors.contact_phone" class="form_error text-right"
                               style="margin-right: 30px">{{ errors.contact_phone }}</span>
                     </div>
                     <div class="input-group">
                         <label for="">Address:</label>
-                        <textarea v-model="order_form.contact_address"></textarea>
+                        <textarea v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" v-model="order_form.contact_address"></textarea>
+                        <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.contact_address  }}</p>
                     </div>
                 </div>
             </section>
@@ -33,7 +37,8 @@
                     <div class="mini-form">
                         <div class="input-group">
                             <label for="">Sales Rep:</label>
-                            <input id="un-editable" style="border:none;outline: transparent" readonly  type="text" v-model="order_form.user_id">
+                            <input v-if="false" id="un-editable" style="border:none;outline: transparent" readonly  type="text" v-model="order_form.user_id">
+                            <p>{{ order_form.user_id  }}</p>
                         </div>
                     </div>
                 </div>
@@ -42,15 +47,18 @@
                     <div class="mini-form">
                         <div class="input-group">
                             <label for="">LPO number</label>
-                            <input type="text" v-model="order_form.lpo_number">
+                            <input v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" type="text" v-model="order_form.lpo_number">
+                            <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.customer_name  }}</p>
                             <span v-if="errors.lpo_number" class="form_error text-left"
                                   style="margin-left: 120px">{{ errors.lpo_number }}</span>
                         </div>
                         <div class="input-group">
                             <label for="">LPO value</label>
-                            <input type="text" v-model="order_form.lpo_value">
-                            <span v-if="errors.lpo_value" class="form_error text-left"
-                                  style="margin-left: 120px">{{ errors.lpo_value }}</span>
+
+                            <input  v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" type="currency" v-model="order_form.lpo_value">
+                            <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.lpo_value  }}</p>
+
+                            <span v-if="errors.lpo_value" class="form_error text-left" style="margin-left: 120px">{{ errors.lpo_value }}</span>
                         </div>
 
                     </div>
@@ -61,7 +69,8 @@
                     <div class="mini-form">
                         <div class="input-group">
                             <label for="">Proposed DD:</label>
-                            <input type="date" v-model="order_form.proposed_delivery_date">
+                            <input v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" type="date" v-model="order_form.proposed_delivery_date">
+                            <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.proposed_delivery_date  }}</p>
                             <span v-if="errors.proposed_delivery_date" class="form_error text-left"
                                   style="margin-left: 120px">{{ errors.proposed_delivery_date }}</span>
                         </div>
@@ -77,13 +86,14 @@
                 <div class="mini-form">
                     <div class="input-group">
                         <label for="">Comment:</label>
-                        <textarea class="h-[170px]" v-model="order_form.comments"></textarea>
+                        <textarea v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" class="h-[170px]" v-model="order_form.comments"></textarea>
+                        <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.comments  }}</p>
                     </div>
                 </div>
             </div>
 
             <div class="opf-entry-sect w-[370px]">
-                <section class="customer-section mb-[40px]">
+                <section v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" class="customer-section mb-[40px]">
                     <h4 >Attach OPF</h4>
                     <input class="ml-[100px] inline-block w-[280px]" type="file" @input="order_form.opfFile = $event.target.files[0]">
                 </section>
@@ -100,9 +110,43 @@
 </template>
 
 <script>
+
+function localStringToNumber( s ){
+    return Number(String(s).replace(/[^0-9.-]+/g,""))
+}
+
+function onFocus(e){
+    let value = e.target.value;
+    e.target.value = value ? localStringToNumber(value) : ''
+}
+
+function onBlur(e){
+    let value = e.target.value
+
+    let options = {
+        maximumFractionDigits : 2,
+        currency              : 'Ksh',
+        style                 : "currency",
+        currencyDisplay       : "symbol"
+    }
+
+    e.target.value = (value || value === 0)
+        ? localStringToNumber(value).toLocaleString(undefined, options)
+        : ''
+}
+
+
+
+
+
 export default {
     name: "orderDisplayForm",
     props: ['order_form', 'user', 'errors','procurement'],
+    watch:{
+      order_form: ()=> {
+          console.log("hi");
+      }
+    },
     computed:{
         file_path(){
             let path = this.procurement[0].opf_file_path;
@@ -120,7 +164,25 @@ export default {
       }
     },
     mounted() {
-    }
+        let currencyInput = document.querySelector('input[type="currency"]')
+
+        if(currencyInput){
+            onBlur({target:currencyInput})
+
+            currencyInput.addEventListener('focus', onFocus)
+            currencyInput.addEventListener('blur', onBlur)
+        }
+    },
+    // updated() {
+    //     let currencyInput = document.querySelector('input[type="currency"]')
+    //
+    //     if(currencyInput){
+    //         onBlur({target:currencyInput})
+    //
+    //         currencyInput.addEventListener('focus', onFocus)
+    //         currencyInput.addEventListener('blur', onBlur)
+    //     }
+    // }
 }
 </script>
 
@@ -276,5 +338,11 @@ form {
     }
 }
 
+.input-group{
+    p{
+        padding: 0px 20px 10px;
+        font-weight: bolder;
+    }
+}
 
 </style>

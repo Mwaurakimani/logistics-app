@@ -3,7 +3,7 @@
     <div class="action-bar">
         <div class="button-section">
             <ul>
-                <Link :href="route('dashboard_users')" as="li" >
+                <Link :href="route('dashboard_users')" as="li">
                     <p>User List</p>
                 </Link>
                 <li v-if="selected_user == null || selected_user == 'undefined'" @click="create_user">
@@ -25,17 +25,18 @@
                     <div class="input-group">
                         <label for="">Username</label>
                         <input type="text" v-model="user_from.username">
-                        <span v-if="this.$attrs.errors.username"  class="form_error">{{this.$attrs.errors.username}} </span>
+                        <span v-if="this.$attrs.errors.username"
+                              class="form_error">{{ this.$attrs.errors.username }} </span>
                     </div>
                     <div class="input-group">
                         <label for="">Email</label>
                         <input type="email" v-model="user_from.email">
-                        <span v-if="this.$attrs.errors.email"  class="form_error">{{this.$attrs.errors.email}} </span>
+                        <span v-if="this.$attrs.errors.email" class="form_error">{{ this.$attrs.errors.email }} </span>
                     </div>
                     <div class="input-group">
                         <label for="">Phone</label>
                         <input type="text" v-model="user_from.phone">
-                        <span v-if="this.$attrs.errors.phone"  class="form_error">{{this.$attrs.errors.phone}} </span>
+                        <span v-if="this.$attrs.errors.phone" class="form_error">{{ this.$attrs.errors.phone }} </span>
                     </div>
                     <div class="input-group">
                         <label for="">Account Type</label>
@@ -57,24 +58,24 @@
                     </div>
                 </div>
             </div>
-            <div v-if="selected_user"  class="user-details-section">
+            <div v-if="selected_user" class="user-details-section">
                 <h5>Security</h5>
 
                 <div class="form-item">
                     <div class="input-group">
                         <label for="">Current password</label>
                         <input type="password" v-model="security_form.current_password">
-                        <p class="error_text" >{{ $attrs.errors.current_password }}</p>
+                        <p class="error_text">{{ $attrs.errors.current_password }}</p>
                     </div>
                     <div class="input-group">
                         <label for="">New Password</label>
                         <input type="password" v-model="security_form.new_password">
-                        <p class="error_text" >{{ $attrs.errors.new_password }}</p>
+                        <p class="error_text">{{ $attrs.errors.new_password }}</p>
                     </div>
                     <div class="input-group">
                         <label for="">Confirm Password</label>
                         <input type="password" v-model="security_form.confirm_new_password">
-                        <p class="error_text" >{{ $attrs.errors.confirm_new_password }}</p>
+                        <p class="error_text">{{ $attrs.errors.confirm_new_password }}</p>
                     </div>
 
                     <button @click="update_password">Update Password</button>
@@ -105,34 +106,34 @@
 <script>
 export default {
     name: "usersForm.vue",
-    props:['selected_user'],
-    data(){
+    props: ['selected_user'],
+    data() {
         return {
             user_from: this.$inertia.form({
-               username: this.selected_user ? this.selected_user.username : null ,
-                email: this.selected_user ? this.selected_user.email : null ,
-                phone: this.selected_user ? this.selected_user.phone : null ,
-                account_type: this.selected_user ? this.selected_user.account_type : null ,
-                notes: this.selected_user ? this.selected_user.notes : null ,
+                username: this.selected_user ? this.selected_user.username : null,
+                email: this.selected_user ? this.selected_user.email : null,
+                phone: this.selected_user ? this.selected_user.phone : null,
+                account_type: this.selected_user ? this.selected_user.account_type : null,
+                notes: this.selected_user ? this.selected_user.notes : null,
             }),
 
             security_form: this.$inertia.form({
-                current_password:null,
-                new_password:null,
-                confirm_new_password:null,
+                current_password: null,
+                new_password: null,
+                confirm_new_password: null,
             })
         }
     },
 
-    methods:{
-        create_user(){
+    methods: {
+        create_user() {
             this.user_from.post(route('post_new_user'))
         },
-        update_user(){
-            this.user_from.post(route('update_user',[this.selected_user.id]))
+        update_user() {
+            this.user_from.post(route('update_user', [this.selected_user.id]))
         },
-        update_password(){
-            this.security_form.post(route('update_password',[this.selected_user.id]))
+        update_password() {
+            this.security_form.post(route('update_password', [this.selected_user.id]))
         }
     },
 
@@ -141,149 +142,162 @@ export default {
 
 <style lang='scss'>
 
-body{
-  overflow: hidden;
+
+.action-bar {
+
+    .button-section {
+        cursor: pointer;
+    }
 }
 
-.error_text{
-  width: 100%;
-  color: red;
+body {
+    overflow: hidden;
 }
 
-.action-bar{
-  width: 100%;
-  height: 45px;
-  background-color: white;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0px 10px;
+.error_text {
+    width: 100%;
+    color: red;
+}
 
-  .button-section{
-    width: 300px;
-    height: 100%;
+.action-bar {
+    width: 100%;
+    height: 45px;
+    background-color: white;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 10px;
 
-    ul{
-      display: flex;
-      align-items: center;
-      height: 100%;
-      li{
-        background-color: red;
-        width: auto;
+    .button-section {
+        width: 300px;
+        height: 100%;
+
+        ul {
+            display: flex;
+            align-items: center;
+            height: 100%;
+
+            li {
+                background-color: red;
+                width: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: 10px;
+                border-radius: 5px;
+
+                p {
+                    width: auto;
+                    height: auto;
+                    color: white;
+                    padding: 5px 8px;
+                    font-size: 0.95em;
+                }
+            }
+        }
+    }
+
+    .search-section {
+        width: 300px;
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-left: 10px;
-        border-radius: 5px;
 
-        p{
-          width: auto;
-          height: auto;
-          color: white;
-          padding: 5px 8px;
-          font-size: 0.95em;
+        input {
+            height: 32px;
+            border-radius: 8px;
         }
-      }
     }
-  }
-
-  .search-section{
-    width: 300px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    input{
-      height: 32px;
-      border-radius: 8px;
-    }
-  }
 }
 
-.user-form{
-  width: 98%;
-  margin: auto;
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 20px;
+.user-form {
+    width: 98%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
 
-  .form-section{
-    width: 70%;
+    .form-section {
+        width: 70%;
 
-    .user-details-section{
-      width: 100%;
-      background-color: white;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 3px 6px grey;
-
-      h5{
-        font-weight: bolder;
-        margin-bottom: 15px;
-      }
-
-      .form-item{
-        width: 95%;
-        padding: 0px 20px;
-
-        .input-group{
-          margin-bottom: 15px;
-          label{
-            font-size: 0.9em;
-            display: block;
+        .user-details-section {
             width: 100%;
-            margin-bottom: 5px;
-          }
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 6px grey;
 
-          input{
-            height: 32px;
-            width: 80%;
-          }
+            h5 {
+                font-weight: bolder;
+                margin-bottom: 15px;
+            }
 
-          select{
-            width: 80%;
-            height: 32px;
-            padding: 4px;
-          }
-          textarea{
-            width: 80%;
-            height: 100px;
-          }
+            .form-item {
+                width: 95%;
+                padding: 0px 20px;
+
+                .input-group {
+                    margin-bottom: 15px;
+
+                    label {
+                        font-size: 0.9em;
+                        display: block;
+                        width: 100%;
+                        margin-bottom: 5px;
+                    }
+
+                    input {
+                        height: 32px;
+                        width: 80%;
+                    }
+
+                    select {
+                        width: 80%;
+                        height: 32px;
+                        padding: 4px;
+                    }
+
+                    textarea {
+                        width: 80%;
+                        height: 100px;
+                    }
+                }
+
+                button {
+                    margin-top: 10px;
+                    width: 160px;
+                    height: 30px;
+                    color: white;
+                    background-color: red;
+                    border-radius: 8px;
+                }
+            }
         }
-
-        button{
-          margin-top: 10px;
-          width: 160px;
-          height: 30px;
-          color: white;
-          background-color: red;
-          border-radius: 8px;
-        }
-      }
     }
-  }
 
-  .details-section{
-    width: calc(100% - 70% - 10px);
+    .details-section {
+        width: calc(100% - 70% - 10px);
 
-    .form-section{
-      width: 100%;
+        .form-section {
+            width: 100%;
 
-      .info-box{
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        h6{
-          font-weight: bolder;
-          margin-right: 10px;
+            .info-box {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+
+                h6 {
+                    font-weight: bolder;
+                    margin-right: 10px;
+                }
+
+                h6, p {
+                    font-size: 0.85em;
+                }
+            }
         }
-        h6,p{
-          font-size: 0.85em;
-        }
-      }
     }
-  }
 }
 </style>

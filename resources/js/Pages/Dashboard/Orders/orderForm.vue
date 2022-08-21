@@ -6,10 +6,12 @@
                 <Link :href="route('dashboard_orders')" as="li" class="rep-btn">
                     <p>Order List</p>
                 </Link>
-                <li  v-if="order && ['Admin','Sales'].includes($attrs.user.account_type)" @click="update_order" class="rep-btn">
+                <li v-if="order && ['Admin','Sales','Finance','Logistics'].includes($attrs.user.account_type)" @click="update_order"
+                    class="rep-btn">
                     <p>Update</p>
                 </li>
-                <li v-else-if="['Admin','Sales'].includes($attrs.user.account_type)" @click="create_order" class="rep-btn">
+                <li v-else-if="['Admin','Sales'].includes($attrs.user.account_type)" @click="create_order"
+                    class="rep-btn">
                     <p>save</p>
                 </li>
                 <Link v-if="order" :href="route('dashboard_orders_delivery_Details',[order.id])" as="li"
@@ -24,41 +26,62 @@
         <div class="form-section">
             <div class="user-details-section">
                 <h5>Order Details</h5>
-                <order-display-form :order_form="order_form_holder" :procurement="procurement" :user="this.$attrs.user" :errors="errors"/>
+                <order-display-form :order_form="order_form_holder" :procurement="procurement" :user="this.$attrs.user"
+                                    :errors="errors"/>
             </div>
-            <div v-if="order && ['Admin','Procurement'].includes($attrs.user.account_type)" class="user-details-section">
+            <div
+                 class="user-details-section">
                 <h5>Procurement Details</h5>
-                <procurement-form  :order_details="order" :procurement="procurement" :user="this.$attrs.user"/>
+                <procurement-form :order_details="order" :procurement="procurement" :user="this.$attrs.user"/>
             </div>
-            <div v-if="order && ['Admin','Finance'].includes($attrs.user.account_type)" class="user-details-section">
+            <div class="user-details-section">
                 <h5>Finance Details</h5>
                 <finance-form :order_form="order" :finance="finance" :user="this.$attrs.user"/>
             </div>
         </div>
-        <div class="details-section-order">
+        <div class="details-section-order" v-if="order">
             <div class="form-section">
                 <div class="user-details-section">
-                    <h5>Shipment Details</h5>
+                    <h5>Order Processing Status</h5>
+                    <div  class="form-item">
+                        <div v-if="procurement && (procurement.length) > 0" class="item-holder">
+                            <h3>Procurement Status :</h3>
+                            <p>{{ procurement[0].status }}</p>
+                        </div>
+                        <div v-if="finance && (finance.length > 0)" class="item-holder">
+                            <h3>Finance Status :</h3>
+                            <p>{{ finance[0].status }}</p>
+                        </div>
+                    </div>
 
-                    <div class="form-item">
-                        <div class="input-group">
+                    <div  class="form-item">
+                        <div v-if="['Admin','Finance'].includes($attrs.user.account_type)"  class="input-group">
                             <label for="">Payment Status</label>
                             <select name="" id="" v-model="order_form_holder.payment_status">
                                 <option value="Payment pending">Payment pending</option>
                                 <option value="Payed">Payed</option>
                             </select>
                         </div>
-                        <div class="input-group">
-                            <label for="">Delivery Status</label>
+                        <div v-else class="item-holder">
+                            <h3>Payment Status :</h3>
+                            <p>{{ order_form_holder.payment_status }}</p>
+                        </div>
+
+
+                        <div v-if="['Admin','Logistics'].includes($attrs.user.account_type)" class="input-group">
+                            <label for="">Deliver Status</label>
                             <select name="" id="" v-model="order_form_holder.delivery_status">
-                                <option value="Approval pending">Approval pending</option>
-                                <option value="Approved">Approved</option>
+                                <option value="Pending">Pending</option>
                                 <option value="Dispatched">Dispatched</option>
-                                <option value="Transit">Transit</option>
                                 <option value="Delivered">Delivered</option>
                                 <option value="Fulfilled">Fulfilled</option>
                             </select>
                         </div>
+                        <div v-else class="item-holder">
+                            <h3>Delivery Status :</h3>
+                            <p>Pending</p>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -99,7 +122,7 @@ export default {
                 payment_status: this.order ? this.order.payment_status : 'Payment pending',
                 delivery_status: this.order ? this.order.delivery_status : 'Approval pending',
                 tb: null,
-                opfFile:null
+                opfFile: null
             }),
             errors: this.$attrs.errors
         }
@@ -108,7 +131,7 @@ export default {
         create_order() {
             let table_data = this.extract_items()
 
-            this.order_form_holder.post(route('post_order'),{
+            this.order_form_holder.post(route('post_order'), {
                 data_table: table_data
             })
         },
@@ -129,10 +152,10 @@ export default {
                 let data_cells = tr.children();
 
                 let row = {
-                    name:  $(data_cells[0]).children()[0].value,
+                    name: $(data_cells[0]).children()[0].value,
                     quantity: $(data_cells[1]).children()[0].value,
                     each: $(data_cells[2]).children()[0].value,
-                    sub_total:  $(data_cells[3]).children()[0].value
+                    sub_total: $(data_cells[3]).children()[0].value
                 }
 
                 items.push(row)
@@ -230,13 +253,23 @@ body {
             width: 100%;
 
             .form-item {
-                padding: 0;
                 margin-top: 10px;
+                margin-bottom: 20px;
+                padding: 20px 0 0;
+
+
+                .item-holder {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 10px;
+                }
 
 
                 .input-group {
                     margin-bottom: 30px;
                     width: 100%;
+                    display: flex;
+                    justify-content: space-between;
 
                     label {
                         margin-bottom: 5px;
@@ -245,7 +278,7 @@ body {
                     select {
                         padding: 0px;
                         padding-left: 5px;
-                        width: 240px;
+                        width: 200px;
                         height: 25px;
                         border: 1px solid #B7B7B7;
                     }

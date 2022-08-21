@@ -1,68 +1,38 @@
 [
     {
-        "username": "Mwaura",
-        "email": "mwaura@email.com",
-        "phone": "0700000001",
-        "account_type": "Admin"
-    },
-    {
         "username": "Admin",
         "email": "admin@email.com",
         "phone": "0700000001",
         "account_type": "Admin"
     },
     {
-        "username": "Moderator",
-        "email": "moderator@email.com",
+        "username": "Sales",
+        "email": "sales@email.com",
         "phone": "0700000002",
-        "account_type": "Moderator"
+        "account_type": "Sales"
     },
     {
-        "username": "Alan",
-        "email": "alan@email.com",
+        "username": "Procurement",
+        "email": "procurement@email.com",
         "phone": "0700000003",
-        "account_type": "Sales"
+        "account_type": "Procurement"
     },
     {
-        "username": "Brad",
-        "email": "brad@email.com",
+        "username": "Finance",
+        "email": "finance@email.com",
         "phone": "0700000004",
-        "account_type": "Sales"
+        "account_type": "Finance"
     },
     {
-        "username": "Alice",
-        "email" : "alice@email.com",
+        "username": "Logistics",
+        "email" : "logistics@email.com",
         "phone" : "0700000005",
-        "account_type" :  "Sales"
+        "account_type" :  "Logistics"
     },
     {
-        "username": "Brian",
-        "email": "brian@email.com",
+        "username": "Manger",
+        "email": "manger@email.com",
         "phone": "0700000006",
-        "account_type": "Finance"
-    },
-    {
-        "username": "Purity",
-        "email": "purity@email.com",
-        "phone": "0700000007",
-        "account_type": "Finance"
-    },
-    {
-        "username": "Mary",
-        "email": "mary@email.com",
-        "phone": "0700000008",
-        "account_type": "Logistics"
-    },
-    {
-        "username": "David",
-        "email": "david@email.com",
-        "phone": "0700000009",
-        "account_type": "Rider"
-    },
-    {
-        "username": "Peter",
-        "email": "peter@email.com",
-        "phone": "0700000010",
-        "account_type": "Rider"
+        "account_type": "Manager"
     }
 ]

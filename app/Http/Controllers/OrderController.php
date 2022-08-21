@@ -19,10 +19,11 @@ class OrderController extends Controller
     public function list_orders()
     {
         if (Auth::user()->account_type == 'Sales') {
-            $orders = Order::where('user_id',Auth::user()->id)->latest()->paginate(15);
+            $orders = Order::with(['procurements','finance'])->where('user_id',Auth::user()->id)->latest()->paginate(15);
         } else {
-            $orders = Order::latest()->paginate(15);
+            $orders = Order::with(['procurements','finance'])->latest()->paginate(15);
         }
+
 
         $orders->getCollection()->transform(function ($item, $key) {
 
@@ -34,6 +35,7 @@ class OrderController extends Controller
 
             return $item;
         })->toArray();
+
 
         return Inertia::render('Dashboard/Orders/index', [
             'orders' => $orders,
@@ -47,7 +49,12 @@ class OrderController extends Controller
         $status = $request['status'];
         $apply_filters = $request['filters_applies'];
 
-        $query = DB::table('orders')->where('user_id',Auth::user());
+
+        $query = Order::with(['procurements','finance']);
+
+        if(Auth::user()->account_type == 'Sales'){
+            $query->where('user_id',Auth::user()->id);
+        }
 
         if ($apply_filters) {
             if ($search_id) {
@@ -64,9 +71,8 @@ class OrderController extends Controller
                 }
             }
         }
-//        dump($query->toSql());
 
-        $orders = $query->paginate(15);
+        $orders = $query->orderBy('id','desc')->paginate(15);
 
         $orders->getCollection()->transform(function ($item, $key) {
 
@@ -106,6 +112,8 @@ class OrderController extends Controller
 
         $procurement = new ProcurementController();
 
+        $request['comments'] = '';
+
         $procurement->create_procurement($request,$order->id);
 
         Session::flash('sess_message',"Order was created Successfully");
@@ -132,7 +140,6 @@ class OrderController extends Controller
         $Order->contact_name = $request['contact_name'];
         $Order->contact_phone = $request['contact_phone'];
         $Order->contact_address = $request['contact_address'];
-        $Order->user_id = Auth::user()->id;
         $Order->proposed_delivery_date = $request['proposed_delivery_date'];
         $Order->comments = $request['comments'];
         $Order->lpo_number = $request['lpo_number'];
@@ -142,10 +149,22 @@ class OrderController extends Controller
 
         $Order->save();
 
-        $proc = Procurement::where('order_id',$Order->id)->get()[0];
+        $proc = Procurement::where('order_id',$Order->id)->get();
 
-        $procurement = new ProcurementController();
-        $procurement->update_procurement($proc, $request, $Order->id);
+        if(count($proc)){
+            $proc = $proc[0];
+        }else{
+            $procurement_controller = new ProcurementController();
+            $procurement = new Procurement();
+
+            $procurement->order_id = $Order->id;
+            $procurement->status = 'Pending';
+            $procurement->comments = '';
+
+            $procurement_controller->update_procurement($procurement,$request , $Order->id);
+        }
+
+
 
         Session::flash('sess_message',"Order was Updated Successfully");
 

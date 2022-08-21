@@ -32,12 +32,11 @@ class DashboardController extends Controller
     public function get_orders(): \Illuminate\Support\Collection
     {
         return DB::table('orders')
+            ->where('user_id', Auth::user()->id)
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
     }
-
-
 
     public function dashboard_search_order_by_id(Request $request): \Illuminate\Support\Collection
     {
@@ -45,6 +44,7 @@ class DashboardController extends Controller
 
         if ($id != null) {
             return Order::where('id', $id)
+                ->where('user_id', Auth::user()->id)
                 ->get();
         } else {
             return $this->get_orders();
@@ -56,9 +56,12 @@ class DashboardController extends Controller
     {
         $id = $request['id'];
 
-        $order = Order::where('id', $request['id'])->get();
+        $order = Order::find($request['id']);
 
-        return $order[0];
+        $order->push($order->procurements);
+
+        return ($order);
+
     }
 
     #[ArrayShape(['orders_received' => "\Illuminate\Support\Collection", 'orders_fulfilled' => "\Illuminate\Support\Collection", 'orders_pending' => "\Illuminate\Support\Collection", 'issues' => "mixed"])] public function get_top_data(): array
@@ -92,23 +95,31 @@ class DashboardController extends Controller
 
         $proc = DB::table('procurements')
             ->select('order_id')
-            ->where('status', 'Unfulfillable');
+            ->where('status', 'Unfulfillable')
+            ->orWhere('status', 'Partially Fulfillable');
 
-        $partials = DB::table('procurements')
+        $orders_with_issues = DB::table('finances')
             ->select('order_id')
-            ->where('status', 'Partially Fulfillable');
+            ->where('status', 'Rejected')
+            ->union($proc)->get();
 
-        $issues = DB::table('orders')
-            ->where('user_id', Auth::user()->id)
-            ->whereIn('id',
-                $proc = DB::table('finances')
-                    ->select('order_id')
-                    ->where('status', 'Rejected')
-                    ->union($proc)
-                    ->union($partials)
-            )->get();
+        $orders_with_issues_array = [];
+
+        $orders_with_issues->map(function ($item,$key) use (&$orders_with_issues_array){
+            array_push($orders_with_issues_array, $item->order_id);
+        });
+
+        if (Auth::user()->account_type == 'Sales') {
+            $issues = DB::table('orders')
+                ->where('user_id', Auth::user()->id)
+                ->whereIn('id',$orders_with_issues_array)->get();
+        }else{
+            $issues = DB::table('orders')->whereIn('id',$orders_with_issues_array)->get();
+        }
+
 
         $issue_array = [];
+
 
         if (count($issues) > 0) {
             $issues->map(function ($item, $key) use (&$issue_array) {
@@ -136,7 +147,7 @@ class DashboardController extends Controller
 
         $sales_delivered = DB::select("SELECT year(delivers.estimated_time_of_arrival) as year,month(delivers.estimated_time_of_arrival) as month, COUNT(orders.id) as records
                                                 from orders,delivers
-                                                WHERE orders.id = delivers.id
+                                                WHERE orders.id = delivers.order_id
                                                 AND orders.delivery_status = 'Fulfilled'
                                                 GROUP BY year,month;");
 
@@ -158,19 +169,19 @@ class DashboardController extends Controller
         };
 
         $data = [
-          ['Months','Orders Received','Orders Delivered'],
-            ['Jan',$get_sales_received(1,2022),$get_orders_delivered(1,2022)],
-            ['Feb',$get_sales_received(2,2022),$get_orders_delivered(2,2022)],
-            ['Mar',$get_sales_received(3,2022),$get_orders_delivered(3,2022)],
-            ['Apr',$get_sales_received(4,2022),$get_orders_delivered(4,2022)],
-            ['May',$get_sales_received(5,2022),$get_orders_delivered(5,2022)],
-            ['Jun',$get_sales_received(6,2022),$get_orders_delivered(6,2022)],
-            ['Jul',$get_sales_received(7,2022),$get_orders_delivered(7,2022)],
-            ['Aug',$get_sales_received(8,2022),$get_orders_delivered(8,2022)],
-            ['Sep',$get_sales_received(9,2022),$get_orders_delivered(9,2022)],
-            ['Oct',$get_sales_received(10,2022),$get_orders_delivered(10,2022)],
-            ['Nov',$get_sales_received(11,2022),$get_orders_delivered(11,2022)],
-            ['Dec',$get_sales_received(12,2022),$get_orders_delivered(12,2022)],
+            ['Months', 'Orders Received', 'Orders Delivered'],
+            ['Jan', $get_sales_received(1, 2022), $get_orders_delivered(1, 2022)],
+            ['Feb', $get_sales_received(2, 2022), $get_orders_delivered(2, 2022)],
+            ['Mar', $get_sales_received(3, 2022), $get_orders_delivered(3, 2022)],
+            ['Apr', $get_sales_received(4, 2022), $get_orders_delivered(4, 2022)],
+            ['May', $get_sales_received(5, 2022), $get_orders_delivered(5, 2022)],
+            ['Jun', $get_sales_received(6, 2022), $get_orders_delivered(6, 2022)],
+            ['Jul', $get_sales_received(7, 2022), $get_orders_delivered(7, 2022)],
+            ['Aug', $get_sales_received(8, 2022), $get_orders_delivered(8, 2022)],
+            ['Sep', $get_sales_received(9, 2022), $get_orders_delivered(9, 2022)],
+            ['Oct', $get_sales_received(10, 2022), $get_orders_delivered(10, 2022)],
+            ['Nov', $get_sales_received(11, 2022), $get_orders_delivered(11, 2022)],
+            ['Dec', $get_sales_received(12, 2022), $get_orders_delivered(12, 2022)],
         ];
 
         return $data;

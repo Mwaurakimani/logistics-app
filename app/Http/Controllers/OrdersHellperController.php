@@ -71,7 +71,7 @@ class OrdersHellperController extends Controller
     {
         $status = 'Fulfilled';
 
-        $query = DB::table('orders');
+        $query =  Order::with(['procurements','finance']);
 
         if ($status != 'All') {
             $query->where('delivery_status', $status);
@@ -99,7 +99,7 @@ class OrdersHellperController extends Controller
     {
         $status = 'Fulfilled';
 
-        $query = DB::table('orders');
+        $query =  Order::with(['procurements','finance']);
 
         $query->where('delivery_status', '<>', $status)->get();
 
@@ -159,7 +159,7 @@ class OrdersHellperController extends Controller
 
         $issues = $collection->unique();
 
-        $orders = DB::table('orders')->whereIn('id', $issues)->paginate(15);
+        $orders =  Order::with(['procurements','finance'])->whereIn('id', $issues)->paginate(15);
 
         $orders->getCollection()->transform(function ($item, $key) {
 

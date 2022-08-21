@@ -3,8 +3,8 @@
         <div class="header-section">
             <section class="sales-rep-section">
                 <div class="sales-section">
-                    <h4>Order Payment Status</h4>
-                    <select name="" id="" v-model="financeForm.status">
+                    <h4>Financial</h4>
+                    <select v-if="finance && ['Admin','Finance'].includes(user.account_type)"  name="" id="" v-model="financeForm.status">
                         <option value="Pending">Pending</option>
                         <option value="Reviewing">Reviewing</option>
                         <option value="Approved">Approved</option>
@@ -14,12 +14,15 @@
             </section>
         </div>
         <section class="particulars-section">
-            <textarea style="width: 100%;height: 100%" v-model="financeForm.comments">
+            <textarea v-if="finance && ['Admin','Finance'].includes(user.account_type)" style="width: 100%;height: 100%" v-model="financeForm.comments">
+
+            </textarea>
+            <textarea v-else disabled style="width: 100%;height: 100%" v-model="financeForm.comments">
 
             </textarea>
         </section>
 
-        <button class="update-button" @click="update_finance_details">Update</button>
+        <button v-if="finance && ['Admin','Finance'].includes(user.account_type)"  class="update-button" @click="update_finance_details">Update</button>
     </form>
 </template>
 

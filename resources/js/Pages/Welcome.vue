@@ -5,11 +5,11 @@
         <p>To track your order please enter your tracking ID in the box below and press the "Track" button. This
             was given to you on your receipt and in the confirmation email you should have received.</p>
 
-        <div class="order_tracker_input">
+        <form @submit.prevent = "track_id" class="order_tracker_input">
             <label for="order_id">Tracking ID</label>
             <input id="order_id" type="text" placeholder="Please enter your tracking code" name="order_id" v-model="tracking_form.id">
-            <button @click="track_id">Track</button>
-        </div>
+            <button type="submit">Track</button>
+        </form>
         <app-footer/>
     </layout>
 </template>
@@ -39,15 +39,6 @@ export default {
             this.tracking_form.post(route('track_delivery_by_id'));
         }
     },
-    mounted() {
-        document.addEventListener('keyup', (event) =>{
-            let key = event.key;
-
-            if(key === 'Enter'){
-                this.track_id()
-            }
-        })
-    }
 }
 </script>
 

@@ -17,12 +17,6 @@
                 <h5>{{ delivery[0].estimated_time_of_arrival }} - By End Day</h5>
                 <!--            <button>Shipping notifications</button>-->
             </section>
-            <section>
-                <h5>More Shipment Details</h5>
-                <div class="more-details">
-                    2 Pieces
-                </div>
-            </section>
             <section class="detailed_shipping_details" style="border:none">
                 <h5 class="" style="margin-bottom: 30px">All Shipment Details</h5>
                 <div class="splitter"></div>
@@ -60,7 +54,7 @@
 
     <div v-else class="no_order_details">
         <div class="no_order_notice">
-            <p>No order with id <b style="color: red">{{ delivery_id }}</b> found</p>
+            <p>No delivery with tracking code <b style="color: red">{{ delivery_id }}</b> found</p>
             <Link :href="'/'" as="a"  > Go to Home</Link>
         </div>
     </div>

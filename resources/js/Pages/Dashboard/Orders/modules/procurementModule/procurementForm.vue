@@ -5,8 +5,8 @@
 
             <section class="sales-rep-section">
                 <div class="sales-section">
-                    <h4>Order Fulfilment Status</h4>
-                    <select name="" id="" v-model="procurementForm.status">
+                    <h4>Order Fulfilment</h4>
+                    <select v-if="procurement && ['Admin','Procurement'].includes(user.account_type)" class="update-button" name="" id="" v-model="procurementForm.status">
                         <option value="Pending">Pending</option>
                         <option value="Unfulfillable">Unfulfillable</option>
                         <option value="Partially Fulfillable">Partially Fulfillable</option>
@@ -17,12 +17,16 @@
             </section>
         </div>
         <section class="particulars-section">
-            <textarea style="width: 100%;height: 100%" v-model="procurementForm.comments">
+            <textarea v-if="procurement && ['Admin','Procurement'].includes(user.account_type)" style="width: 100%;height: 100%" v-model="procurementForm.comments">
+
+            </textarea>
+            <textarea v-else style="width: 100%;height: 100%;" v-model="procurementForm.comments" disabled>
 
             </textarea>
         </section>
-
-        <button class="update-button" @click="upload_procurement_Details">Update</button>
+        <button v-if="procurement && ['Admin','Procurement'].includes(user.account_type)" class="update-button"
+                @click="upload_procurement_Details">Update
+        </button>
     </form>
 </template>
 
@@ -30,15 +34,15 @@
 export default {
     name: "procurementForm",
     props: ['order_details', 'user', 'procurement'],
-    computed:{
-      file_path(){
-         let path = this.procurement[0].opf_file_path;
-          path = path.split('/');
-          path.shift();
-          path = path.join('/')
+    computed: {
+        file_path() {
+            let path = this.procurement[0].opf_file_path;
+            path = path.split('/');
+            path.shift();
+            path = path.join('/')
 
-          return path;
-      } ,
+            return path;
+        },
     },
     data() {
         return {
@@ -62,51 +66,51 @@ export default {
 <style lang='scss' scoped>
 
 h4 {
-  font-weight: 500;
-  font-size: 1.1em;
-  margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 1.1em;
+    margin-bottom: 10px;
 }
 
 form {
-  margin-top: 10px;
-  width: 100%;
-  height: 100%;
-  //border: 1px solid grey;
-  & > button {
-    padding: 5px 10px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: red;
-    color: white;
-  }
-
-  select {
+    margin-top: 10px;
     width: 100%;
-    height: 30px;
-    padding: 2px;
-  }
+    height: 100%;
+    //border: 1px solid grey;
+    & > button {
+        padding: 5px 10px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: red;
+        color: white;
+    }
+
+    select {
+        width: 100%;
+        height: 30px;
+        padding: 2px;
+    }
 }
 
 .header-section {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.9em;
-  margin-bottom: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    margin-bottom: 10px;
 
-  .customer-section {
-    width: 370px;
-  }
+    .customer-section {
+        width: 370px;
+    }
 }
 
 .particulars-section {
-  width: 95%;
-  margin: auto;
-  height: 200px;
-  background-color: #00FFA6;
-  margin-bottom: 10px;
+    width: 95%;
+    margin: auto;
+    height: 200px;
+    background-color: #00FFA6;
+    margin-bottom: 10px;
 }
 
 

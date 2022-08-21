@@ -47,7 +47,9 @@
                     <th scope="col">Customer</th>
                     <th scope="col">Date Created</th>
                     <th scope="col">Delivery Date</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Procurement Status</th>
+                    <th scope="col">Finance Status</th>
+                    <th scope="col">Delivery Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,6 +60,8 @@
                     <td>{{ order.customer_name }}</td>
                     <td>{{ order.created_at }}</td>
                     <td>{{ order.proposed_delivery_date }}</td>
+                    <td>{{ order.procurements ? order.procurements.status : '-' }}</td>
+                    <td>{{ order.finance ? order.finance.status : '-' }}</td>
                     <td>{{ order.delivery_status }}</td>
                 </Link>
             </tbody>
@@ -102,6 +106,7 @@ export default {
 
     methods:{
         filter_orders(){
+            this.$store.state.ordersModule.filters_applies = true;
             this.getResults();
         },
         clear_filters(){
@@ -114,23 +119,8 @@ export default {
         },
         getResults(page = 1) {
             let form_data = this.$inertia.form(this.filterData);
-            this.filterData.filters_applies = true;
 
-            //get the current path
-            let path = window.location.pathname;
-
-            form_data.post(path+'?page=' + page)
-
-            return;
-            let url_path = this.get_path_name()
-            // route('dashboard_orders')
-
-            // window.location.pathname
-
-            // return;
-            // let path = window.location.pathname;
-            // return;
-            // form_data.post(route('dashboard_orders')+'?page=' + page)
+            form_data.post(route('dashboard_orders')+'?page=' + page)
         },
         get_path_name(text){
             let el = document.createElement("a");

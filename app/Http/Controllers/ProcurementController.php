@@ -49,6 +49,8 @@ class ProcurementController extends Controller
     public function update_procurement ($procurement, $request, $order_id)
     {
         $file = $request->file ('opfFile');
+
+
         $procurement->status = $request['status'] ?? $procurement->status;
         $procurement->comments = $request['comments'] ?? $procurement->comments;
 

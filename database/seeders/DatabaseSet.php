@@ -20,9 +20,9 @@ class DatabaseSet extends Seeder
     {
         $this->add_users();
 
-        $this->add_orders();
+//        $this->add_orders();
 
-        $this->add_vehicles();
+//        $this->add_vehicles();
     }
 
     public function add_users(){
