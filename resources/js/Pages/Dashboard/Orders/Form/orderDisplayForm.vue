@@ -7,12 +7,14 @@
                     <div class="input-group">
                         <label for="">Name:</label>
                         <input v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" type="text" v-model="order_form.customer_name">
-                        <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.customer_name  }}</p>
+                        <p v-if="mode == 'dashboard'">{{order_form.customer_name}}</p>
+                        <p v-if="!['Admin','Sales'].includes(user.account_type) ">{{ order_form.customer_name  }}</p>
                         <span v-if="errors.customer_name" class="form_error text-right"
                               style="margin-right: 30px">{{ errors.customer_name }}</span>
                     </div>
                     <div class="input-group">
                         <label for="">Contact Name:</label>
+                        <p v-if="mode == 'dashboard'">{{order_form.contact_name}}</p>
                         <input v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" type="text" v-model="order_form.contact_name">
                         <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.contact_name  }}</p>
                         <span v-if="errors.contact_name" class="form_error text-right"
@@ -20,6 +22,7 @@
                     </div>
                     <div class="input-group">
                         <label for="">Tel:</label>
+                        <p v-if="mode == 'dashboard'">{{order_form.contact_phone}}</p>
                         <input v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" type="tel" v-model="order_form.contact_phone">
                         <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.contact_phone  }}</p>
                         <span v-if="errors.contact_phone" class="form_error text-right"
@@ -27,6 +30,7 @@
                     </div>
                     <div class="input-group">
                         <label for="">Address:</label>
+                        <p v-if="mode == 'dashboard'">{{order_form.contact_address}}</p>
                         <textarea v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" v-model="order_form.contact_address"></textarea>
                         <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.contact_address  }}</p>
                     </div>
@@ -47,6 +51,7 @@
                     <div class="mini-form">
                         <div class="input-group">
                             <label for="">LPO number</label>
+                            <p v-if="mode == 'dashboard'">{{order_form.lpo_number}}</p>
                             <input v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" type="text" v-model="order_form.lpo_number">
                             <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.customer_name  }}</p>
                             <span v-if="errors.lpo_number" class="form_error text-left"
@@ -54,10 +59,9 @@
                         </div>
                         <div class="input-group">
                             <label for="">LPO value</label>
-
+                            <p v-if="mode == 'dashboard'">{{order_form.lpo_value}}</p>
                             <input  v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" type="currency" v-model="order_form.lpo_value">
                             <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.lpo_value  }}</p>
-
                             <span v-if="errors.lpo_value" class="form_error text-left" style="margin-left: 120px">{{ errors.lpo_value }}</span>
                         </div>
 
@@ -69,6 +73,7 @@
                     <div class="mini-form">
                         <div class="input-group">
                             <label for="">Proposed DD:</label>
+                            <p v-if="mode == 'dashboard'">{{order_form.proposed_delivery_date}}</p>
                             <input v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" type="date" v-model="order_form.proposed_delivery_date">
                             <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.proposed_delivery_date  }}</p>
                             <span v-if="errors.proposed_delivery_date" class="form_error text-left"
@@ -86,6 +91,7 @@
                 <div class="mini-form">
                     <div class="input-group">
                         <label for="">Comment:</label>
+                        <p v-if="mode == 'dashboard'">{{order_form.id}}</p>
                         <textarea v-if="(order_form.id == null || order_form.id == '') && ['Admin','Sales'].includes(user.account_type)" class="h-[170px]" v-model="order_form.comments"></textarea>
                         <p v-if="!['Admin','Sales'].includes(user.account_type)">{{ order_form.comments  }}</p>
                     </div>
@@ -141,7 +147,25 @@ function onBlur(e){
 
 export default {
     name: "orderDisplayForm",
-    props: ['order_form', 'user', 'errors','procurement'],
+    props: {
+        order_form :{
+            type: Object
+        },
+user :{
+    type: Object
+},
+errors :{
+    type: Object
+},
+procurement :{
+    type: Object
+},
+mode :{
+    type: String,
+    default: "View"
+},
+
+    } ,
     watch:{
       order_form: ()=> {
           console.log("hi");

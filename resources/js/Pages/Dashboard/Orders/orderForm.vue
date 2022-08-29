@@ -79,7 +79,7 @@
                         </div>
                         <div v-else class="item-holder">
                             <h3>Delivery Status :</h3>
-                            <p>Pending</p>
+                            <p>{{ order_form_holder.delivery_status }}</p>
                         </div>
 
                     </div>

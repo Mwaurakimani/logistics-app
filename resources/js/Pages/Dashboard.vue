@@ -86,6 +86,7 @@
                     :key="this.order_data.id ?? 1"
                     :errors="errors"
                     :user="$attrs.user"
+                    :mode="'dashboard'"
                 ></order-display-form>
                 <div class="action-section">
                     <button v-if="order_form_holder && order_form_holder.id !=  null" @click="update_order(order_data.id)" >Update</button>
@@ -132,6 +133,7 @@ export default {
         return {
             order_data: {...this.order},
             order_form_holder: this.$inertia.form({
+                id:this.order_data ? this.order_data : null,
                 customer_name: this.order_data ? this.order_data.customer_name : null,
                 contact_name: this.order_data ? this.order_data.contact_name : null,
                 contact_phone: this.order_data ? this.order_data.contact_phone : null,
