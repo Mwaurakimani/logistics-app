@@ -19,14 +19,17 @@
     <div v-if="display_table" class="filter-bar">
         <div class="filters">
             <div class="input-group">
-                <label for="">Date Created</label>
-                <input type="date" v-model="filterData.date_created">
+                <label for="">Delivery Date</label>
+                <input type="date" v-model="filterData.delivery_date">
             </div>
 
             <div class="input-group">
                 <label for="">Status</label>
                 <select name="" id="" v-model="filterData.status">
                     <option value="All">All</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Dispatched">Dispatched</option>
+                    <option value="Delivered">Delivered</option>
                     <option value="Fulfilled">Fulfilled</option>
                 </select>
             </div>
@@ -120,7 +123,7 @@ export default {
         getResults(page = 1) {
             let form_data = this.$inertia.form(this.filterData);
 
-            form_data.post(route('dashboard_orders')+'?page=' + page)
+            form_data.post(route('dashboard_orders_with_filters')+'?page=' + page)
         },
         get_path_name(text){
             let el = document.createElement("a");

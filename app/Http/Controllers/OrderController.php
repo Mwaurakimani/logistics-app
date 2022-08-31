@@ -19,9 +19,9 @@ class OrderController extends Controller
     public function list_orders()
     {
         if (Auth::user()->account_type == 'Sales') {
-            $orders = Order::with(['procurements','finance'])->where('user_id',Auth::user()->id)->latest()->paginate(15);
+            $orders = Order::with(['procurements', 'finance', 'deliveries'])->where('user_id', Auth::user()->id)->latest()->paginate(15);
         } else {
-            $orders = Order::with(['procurements','finance'])->latest()->paginate(15);
+            $orders = Order::with(['procurements', 'finance'])->latest()->paginate(15);
         }
 
 
@@ -45,24 +45,27 @@ class OrderController extends Controller
     public function list_orders_with_filters(Request $request)
     {
         $search_id = $request['search_by_ID'];
-        $date_created = $request['date_created'];
+        $delivery_date = $request['delivery_date'];
         $status = $request['status'];
         $apply_filters = $request['filters_applies'];
 
 
-        $query = Order::with(['procurements','finance']);
+        $query = Order::with(['procurements', 'finance', 'deliveries']);
 
-        if(Auth::user()->account_type == 'Sales'){
-            $query->where('user_id',Auth::user()->id);
+        if (Auth::user()->account_type == 'Sales') {
+            $query->where('user_id', Auth::user()->id);
         }
+
 
         if ($apply_filters) {
             if ($search_id) {
                 $query->where('id', $search_id);
             }
 
-            if ($date_created) {
-                $query->whereDate('created_at', $date_created);
+            if ($delivery_date) {
+                $ids = $this->get_orders_that_meet_delivery_date($delivery_date);
+
+                $query->whereIn('id',$ids );
             }
 
             if ($status != null || $status != '') {
@@ -70,11 +73,14 @@ class OrderController extends Controller
                     $query->where('delivery_status', $status);
                 }
             }
+
         }
 
-        $orders = $query->orderBy('id','desc')->paginate(15);
+        $orders = $query->toSql();
+        $orders = $query->orderBy('id', 'desc')->paginate(15);
 
-        $orders->getCollection()->transform(function ($item, $key) {
+
+        $orders->getCollection()->transform(function ($item, $key) use ($delivery_date) {
 
             $user_id = $item->user_id;
 
@@ -114,9 +120,9 @@ class OrderController extends Controller
 
         $request['comments'] = '';
 
-        $procurement->create_procurement($request,$order->id);
+        $procurement->create_procurement($request, $order->id);
 
-        Session::flash('sess_message',"Order was created Successfully");
+        Session::flash('sess_message', "Order was created Successfully");
 
         return Redirect::to('/orders');
     }
@@ -149,11 +155,11 @@ class OrderController extends Controller
 
         $Order->save();
 
-        $proc = Procurement::where('order_id',$Order->id)->get();
+        $proc = Procurement::where('order_id', $Order->id)->get();
 
-        if(count($proc)){
+        if (count($proc)) {
             $proc = $proc[0];
-        }else{
+        } else {
             $procurement_controller = new ProcurementController();
             $procurement = new Procurement();
 
@@ -161,13 +167,32 @@ class OrderController extends Controller
             $procurement->status = 'Pending';
             $procurement->comments = '';
 
-            $procurement_controller->update_procurement($procurement,$request , $Order->id);
+            $procurement_controller->update_procurement($procurement, $request, $Order->id);
         }
 
 
-
-        Session::flash('sess_message',"Order was Updated Successfully");
+        Session::flash('sess_message', "Order was Updated Successfully");
 
         return Redirect::to('/orders');
+    }
+
+    public function get_orders_that_meet_delivery_date($deliver_date)
+    {
+        $orders_ids = DB::select("SELECT id FROM orders
+                                    WHERE orders.id IN (
+                                        SELECT delivers.order_id
+                                        FROM delivers
+                                        WHERE delivers.estimated_time_of_arrival = '2022-08-22'
+                                    );");
+
+        $orders_ids = collect($orders_ids);
+
+        $ids = [];
+
+        $orders_ids->each(function ($item, $key) use (&$ids) {
+            array_push($ids, $item->id);
+        });
+
+        return $ids;
     }
 }

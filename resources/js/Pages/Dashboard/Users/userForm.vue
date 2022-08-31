@@ -35,7 +35,7 @@
                     </div>
                     <div class="input-group">
                         <label for="">Phone</label>
-                        <input type="text" v-model="user_from.phone">
+                        <input type="text" @change="phone_validate" v-model="user_from.phone">
                         <span v-if="this.$attrs.errors.phone" class="form_error">{{ this.$attrs.errors.phone }} </span>
                     </div>
                     <div class="input-group">
@@ -124,7 +124,6 @@ export default {
             })
         }
     },
-
     methods: {
         create_user() {
             this.user_from.post(route('post_new_user'))
@@ -134,9 +133,22 @@ export default {
         },
         update_password() {
             this.security_form.post(route('update_password', [this.selected_user.id]))
+        },
+        phone_validate(event){
+            this.$attrs.errors.phone = null
+            let phone = this.user_from.phone;
+
+            if (phone === null || phone.trim() === "") {
+                this.$attrs.errors.phone = ("Phone number cannot be empty");
+            } else {
+                if(phone.length === 10 && phone.match(/^\d+$/) !== null  ){
+                    this.$attrs.errors.phone = null
+                }else {
+                    this.$attrs.errors.phone = ("Please enter a valid phone number");
+                }
+            }
         }
     },
-
 }
 </script>
 

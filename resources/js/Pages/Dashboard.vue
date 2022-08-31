@@ -89,7 +89,7 @@
                     :mode="'dashboard'"
                 ></order-display-form>
                 <div class="action-section">
-                    <button v-if="order_form_holder && order_form_holder.id !=  null" @click="update_order(order_data.id)" >Update</button>
+                    <button v-if="order_form_holder && order_form_holder.id !=  null" @click="update_order(order_data.id)" style="display: none"></button>
                     <button v-else @click="create_order">Create</button>
                 </div>
             </div>

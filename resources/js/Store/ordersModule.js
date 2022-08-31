@@ -2,7 +2,7 @@ const ordersModule = {
     state: () => {
         return {
             search_by_ID: null,
-            date_created: null,
+            delivery_date: null,
             status: 'All',
             filters_applies: false
         }

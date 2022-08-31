@@ -25,4 +25,9 @@ class Order extends Model
     {
         return $this->hasOne(Finance::class, 'order_id', 'id');
     }
+
+    public function deliveries(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Deliver::class,'order_id','id');
+    }
 }
